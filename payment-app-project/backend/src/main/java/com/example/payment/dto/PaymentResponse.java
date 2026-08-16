@@ -1,7 +1,6 @@
 package com.example.payment.dto;
 
 import com.example.payment.model.Currency;
-import com.example.payment.model.PaymentMethod;
 import com.example.payment.model.PaymentPurpose;
 import com.example.payment.model.PaymentType;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -29,7 +28,6 @@ public class PaymentResponse {
     @JsonProperty("isVisitor")
     private boolean isVisitor;
     private PaymentType paymentType;
-    private PaymentMethod paymentMethod;
     private PaymentPurpose paymentPurpose;
     private com.example.payment.model.PaymentFrequency paymentFrequency;
     private BigDecimal amount;

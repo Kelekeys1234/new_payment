@@ -97,7 +97,6 @@ public class PaymentService {
                 .userId(user.getId())
                 .visitor(Boolean.TRUE.equals(request.getIsVisitor()))
                 .paymentType(request.getPaymentType())
-                .paymentMethod(request.getPaymentMethod())
                 .paymentPurpose(request.getPaymentPurpose())
                 .paymentFrequency(request.getPaymentFrequency())
                 .amount(request.getAmount())
@@ -116,7 +115,6 @@ public class PaymentService {
 
         payment.setVisitor(Boolean.TRUE.equals(request.getIsVisitor()));
         payment.setPaymentType(request.getPaymentType());
-        payment.setPaymentMethod(request.getPaymentMethod());
         payment.setPaymentPurpose(request.getPaymentPurpose());
         payment.setPaymentFrequency(request.getPaymentFrequency());
         payment.setAmount(request.getAmount());
@@ -197,7 +195,6 @@ public class PaymentService {
                 .phoneNumber(user != null ? user.getPhoneNumber() : null)
                 .isVisitor(payment.isVisitor())
                 .paymentType(payment.getPaymentType())
-                .paymentMethod(payment.getPaymentMethod())
                 .paymentPurpose(payment.getPaymentPurpose())
                 .paymentFrequency(payment.getPaymentFrequency())
                 .amount(payment.getAmount())

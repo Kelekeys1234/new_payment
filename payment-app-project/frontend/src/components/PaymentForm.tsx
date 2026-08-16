@@ -7,12 +7,10 @@ import {
   CURRENCY_LABELS,
   CURRENCY_SYMBOLS,
   PAYMENT_TYPE_LABELS,
-  PAYMENT_METHOD_LABELS,
   type CurrencyCode,
   type Payment,
   type PaymentPurpose,
   type PaymentType,
-  type PaymentMethod,
 } from "../types/Payment";
 import type { User } from "../types/User";
 
@@ -42,7 +40,6 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
   const [newUserName, setNewUserName] = useState("");
 
   const [paymentType, setPaymentType] = useState<PaymentType | "">("");
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | "">("");
   const [paymentPurpose, setPaymentPurpose] = useState<PaymentPurpose | "">("");
   const [paymentFrequency, setPaymentFrequency] = useState<import("../types/Payment").PaymentFrequency | "">("");
   const [amount, setAmount] = useState("");
@@ -118,9 +115,6 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
     }
     if (!paymentType) {
       next.paymentType = "Select a payment type.";
-    }
-    if (!paymentMethod) {
-      next.paymentType = "Select a payment method.";
     }
     if (!paymentPurpose) {
       next.paymentPurpose = "Select a payment purpose.";

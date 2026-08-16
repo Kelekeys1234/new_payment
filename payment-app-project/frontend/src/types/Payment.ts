@@ -1,7 +1,6 @@
 export type PaymentType = "BANK_TRANSFER" | "CASH" | "CARD" | "MOBILE_MONEY" | "OTHER";
 export type PaymentPurpose = "LOAN" | "DONATION";
 export type PaymentFrequency = "ONE_TIME" | "DAILY" | "WEEKLY" | "MONTHLY";
-export type PaymentMethod = "DAILY" | "WEEKLY" | "MONTHLY";
 export type CurrencyCode = "NGN" | "USD" | "EUR" | "GBP";
 
 export interface Payment {
@@ -11,7 +10,6 @@ export interface Payment {
   phoneNumber: string | null;
   isVisitor: boolean;
   paymentType: PaymentType;
-  paymentMethod: PaymentMethod;
   paymentPurpose: PaymentPurpose;
   paymentFrequency: PaymentFrequency;
   amount: number;
@@ -26,7 +24,6 @@ export interface CreatePaymentRequest {
   fullName?: string;
   isVisitor: boolean;
   paymentType: PaymentType;
-  paymentMethod: PaymentMethod;
   paymentPurpose: PaymentPurpose;
   paymentFrequency: PaymentFrequency;
   amount: number;
@@ -37,7 +34,6 @@ export interface UpdatePaymentRequest {
   createdBy: string;
   isVisitor: boolean;
   paymentType: PaymentType;
-  paymentMethod: PaymentMethod;
   paymentPurpose: PaymentPurpose;
   paymentFrequency: PaymentFrequency;
   amount: number;
@@ -50,12 +46,6 @@ export const PAYMENT_TYPE_LABELS: Record<PaymentType, string> = {
   CARD: "Card",
   MOBILE_MONEY: "Mobile Money",
   OTHER: "Other",
-};
-
-export const PAYMENT_METHOD_LABELS: Record<PaymentMethod, string> = {
-  DAILY: "Daily",
-  WEEKLY: "Weekly",
-  MONTHLY: "Monthly",
 };
 
 export const PAYMENT_FREQUENCY_LABELS: Record<PaymentFrequency, string> = {
