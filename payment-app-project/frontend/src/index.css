@@ -47,6 +47,10 @@ body,
   height: 100%;
 }
 
+html {
+  overflow-x: hidden;
+}
+
 body {
   margin: 0;
   overflow-x: hidden;
@@ -149,6 +153,14 @@ a {
   border: 1px solid var(--border);
   border-radius: 999px;
   padding: 4px;
+  max-width: 100%;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.navbar-links::-webkit-scrollbar {
+  display: none;
 }
 
 .navbar-link {
