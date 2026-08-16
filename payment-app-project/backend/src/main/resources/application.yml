@@ -10,12 +10,9 @@ spring:
       write-dates-as-timestamps: false
   data:
     mongodb:
-      # Full connection string, e.g. mongodb+srv://user:pass@cluster.mongodb.net/nehemiah_building
-      # or mongodb://localhost:27017/nehemiah_building for a local/self-hosted instance.
-      uri: ${MONGODB_URI:mongodb://localhost:27017/nehemiah_building}
+      uri: mongodb+srv://kelennafavour:YOUR_PASSWORD@nehemiahbuilders.aefet2x.mongodb.net/nehemiah_builders?appName=nehemiahBuilders
 
 app:
-  # Hardcoded for v1. Replace with SecurityContext lookup once auth is added.
   default-created-by: Diana
 
 logging:
