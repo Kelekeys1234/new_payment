@@ -1,10 +1,13 @@
 package com.example.payment.service;
 
 import com.example.payment.dto.CreateUserRequest;
+import com.example.payment.dto.UpdateUserRequest;
 import com.example.payment.dto.UserResponse;
 import com.example.payment.exception.DuplicateUserException;
+import com.example.payment.exception.ResourceInUseException;
 import com.example.payment.exception.ResourceNotFoundException;
 import com.example.payment.model.User;
+import com.example.payment.repository.PaymentRepository;
 import com.example.payment.repository.UserRepository;
 import com.example.payment.util.SequenceGeneratorService;
 import org.springframework.stereotype.Service;
@@ -18,10 +21,13 @@ public class UserService {
     private static final String USER_SEQUENCE = "users";
 
     private final UserRepository userRepository;
+    private final PaymentRepository paymentRepository;
     private final SequenceGeneratorService sequenceGeneratorService;
 
-    public UserService(UserRepository userRepository, SequenceGeneratorService sequenceGeneratorService) {
+    public UserService(UserRepository userRepository, PaymentRepository paymentRepository,
+                        SequenceGeneratorService sequenceGeneratorService) {
         this.userRepository = userRepository;
+        this.paymentRepository = paymentRepository;
         this.sequenceGeneratorService = sequenceGeneratorService;
     }
 
@@ -72,6 +78,55 @@ public class UserService {
                 .build();
 
         return toResponse(userRepository.save(user));
+    }
+
+    /**
+     * Updates an existing user's registration details. Rejects a phone number or email
+     * that would collide with a *different* user, same as registration does.
+     */
+    public UserResponse updateUser(Long id, UpdateUserRequest request) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " was not found"));
+
+        String normalizedPhone = normalizePhone(request.getPhoneNumber());
+
+        userRepository.findByPhoneNumber(normalizedPhone)
+                .filter(existing -> !existing.getId().equals(id))
+                .ifPresent(existing -> {
+                    throw new DuplicateUserException(
+                            "User with phone number " + request.getPhoneNumber() + " already exists");
+                });
+        userRepository.findByEmailIgnoreCase(request.getEmail())
+                .filter(existing -> !existing.getId().equals(id))
+                .ifPresent(existing -> {
+                    throw new DuplicateUserException(
+                            "User with email " + request.getEmail() + " already exists");
+                });
+
+        user.setFullName(request.getFullName());
+        user.setEmail(request.getEmail());
+        user.setPhoneNumber(normalizedPhone);
+        user.setAddress(request.getAddress());
+        user.setMemberType(request.getMemberType());
+        user.setCreatedBy(request.getCreatedBy());
+
+        return toResponse(userRepository.save(user));
+    }
+
+    /**
+     * Deletes a user. Blocked when the user still has payment records, since those
+     * reference the user by id and would otherwise be orphaned.
+     */
+    public void deleteUser(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User with id " + id + " was not found"));
+
+        if (!paymentRepository.findByUserId(id).isEmpty()) {
+            throw new ResourceInUseException(
+                    "User with id " + id + " has existing payment records and cannot be deleted");
+        }
+
+        userRepository.delete(user);
     }
 
     /**

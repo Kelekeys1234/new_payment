@@ -1,5 +1,5 @@
 import { api } from "./api";
-import type { CreateUserRequest, User, UserPaymentSummary } from "../types/User";
+import type { CreateUserRequest, UpdateUserRequest, User, UserPaymentSummary } from "../types/User";
 
 export const userService = {
   async getAll(): Promise<User[]> {
@@ -37,5 +37,14 @@ export const userService = {
   async create(request: CreateUserRequest): Promise<User> {
     const { data } = await api.post<User>("/users", request);
     return data;
+  },
+
+  async update(id: number, request: UpdateUserRequest): Promise<User> {
+    const { data } = await api.put<User>(`/users/${id}`, request);
+    return data;
+  },
+
+  async remove(id: number): Promise<void> {
+    await api.delete(`/users/${id}`);
   },
 };

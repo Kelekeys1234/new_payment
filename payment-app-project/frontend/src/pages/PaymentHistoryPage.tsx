@@ -4,12 +4,23 @@ import { getErrorMessage } from "../services/api";
 import type { Payment } from "../types/Payment";
 import PaymentTable from "../components/PaymentTable";
 import PaymentFilters, { DEFAULT_FILTERS, type PaymentFilterState } from "../components/PaymentFilters";
+import PaymentEditModal from "../components/PaymentEditModal";
+import Toast, { type ToastState } from "../components/Toast";
 
 export default function PaymentHistoryPage() {
   const [payments, setPayments] = useState<Payment[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filters, setFilters] = useState<PaymentFilterState>(DEFAULT_FILTERS);
+  const [editingPayment, setEditingPayment] = useState<Payment | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [toast, setToast] = useState<ToastState | null>(null);
+
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(null), 3000);
+    return () => clearTimeout(t);
+  }, [toast]);
 
   useEffect(() => {
     let cancelled = false;
@@ -50,6 +61,20 @@ export default function PaymentHistoryPage() {
     });
   }, [payments, filters]);
 
+  async function handleDelete(payment: Payment) {
+    if (!window.confirm(`Delete payment ${payment.id}? This cannot be undone.`)) return;
+    setDeletingId(payment.id);
+    try {
+      await paymentService.remove(payment.id);
+      setPayments((prev) => prev.filter((p) => p.id !== payment.id));
+      setToast({ message: `Payment ${payment.id} deleted.`, variant: "success" });
+    } catch (err) {
+      setToast({ message: getErrorMessage(err), variant: "error" });
+    } finally {
+      setDeletingId(null);
+    }
+  }
+
   return (
     <>
       <div className="page-header">
@@ -75,8 +100,26 @@ export default function PaymentHistoryPage() {
           </div>
         </div>
       ) : (
-        <PaymentTable payments={filtered} />
+        <PaymentTable
+          payments={filtered}
+          onEdit={setEditingPayment}
+          onDelete={deletingId ? undefined : handleDelete}
+        />
       )}
+
+      {editingPayment && (
+        <PaymentEditModal
+          payment={editingPayment}
+          onClose={() => setEditingPayment(null)}
+          onSaved={(updated) => {
+            setPayments((prev) => prev.map((p) => (p.id === updated.id ? updated : p)));
+            setEditingPayment(null);
+            setToast({ message: `Payment ${updated.id} updated.`, variant: "success" });
+          }}
+        />
+      )}
+
+      <Toast toast={toast} />
     </>
   );
 }

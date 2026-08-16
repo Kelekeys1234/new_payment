@@ -27,6 +27,15 @@ export interface CreateUserRequest {
   memberType: MemberType;
 }
 
+export interface UpdateUserRequest {
+  createdBy: string;
+  fullName: string;
+  email: string;
+  phoneNumber: string;
+  address: string;
+  memberType: MemberType;
+}
+
 export interface UserPaymentSummary {
   user: User;
   totalPayments: number;

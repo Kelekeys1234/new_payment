@@ -1,7 +1,17 @@
 import { Link } from "react-router-dom";
 import { CURRENCY_SYMBOLS, PAYMENT_TYPE_LABELS, type Payment } from "../types/Payment";
 
-export default function PaymentTable({ payments }: { payments: Payment[] }) {
+export default function PaymentTable({
+  payments,
+  onEdit,
+  onDelete,
+}: {
+  payments: Payment[];
+  onEdit?: (payment: Payment) => void;
+  onDelete?: (payment: Payment) => void;
+}) {
+  const showActions = Boolean(onEdit || onDelete);
+
   if (payments.length === 0) {
     return (
       <div className="table-scroll">
@@ -26,6 +36,7 @@ export default function PaymentTable({ payments }: { payments: Payment[] }) {
             <th>Amount</th>
             <th>Created By</th>
             <th>Created</th>
+            {showActions && <th>Actions</th>}
           </tr>
         </thead>
         <tbody>
@@ -68,6 +79,22 @@ export default function PaymentTable({ payments }: { payments: Payment[] }) {
                   year: "numeric",
                 })}
               </td>
+              {showActions && (
+                <td>
+                  <div className="table-actions">
+                    {onEdit && (
+                      <button className="btn btn-secondary btn-small" type="button" onClick={() => onEdit(p)}>
+                        Edit
+                      </button>
+                    )}
+                    {onDelete && (
+                      <button className="btn btn-danger btn-small" type="button" onClick={() => onDelete(p)}>
+                        Delete
+                      </button>
+                    )}
+                  </div>
+                </td>
+              )}
             </tr>
           ))}
         </tbody>

@@ -27,6 +27,15 @@ export interface CreatePaymentRequest {
   currency: CurrencyCode;
 }
 
+export interface UpdatePaymentRequest {
+  createdBy: string;
+  isVisitor: boolean;
+  paymentType: PaymentType;
+  paymentPurpose: PaymentPurpose;
+  amount: number;
+  currency: CurrencyCode;
+}
+
 export const PAYMENT_TYPE_LABELS: Record<PaymentType, string> = {
   BANK_TRANSFER: "Bank Transfer",
   CASH: "Cash",

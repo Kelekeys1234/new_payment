@@ -2,6 +2,7 @@ package com.example.payment.service;
 
 import com.example.payment.dto.CreatePaymentRequest;
 import com.example.payment.dto.PaymentResponse;
+import com.example.payment.dto.UpdatePaymentRequest;
 import com.example.payment.dto.UserPaymentSummary;
 import com.example.payment.dto.UserResponse;
 import com.example.payment.exception.ResourceNotFoundException;
@@ -105,6 +106,28 @@ public class PaymentService {
 
         Payment saved = paymentRepository.save(payment);
         return toResponse(saved, user);
+    }
+
+    public PaymentResponse updatePayment(String id, UpdatePaymentRequest request) {
+        Payment payment = paymentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Payment with id " + id + " was not found"));
+
+        payment.setVisitor(Boolean.TRUE.equals(request.getIsVisitor()));
+        payment.setPaymentType(request.getPaymentType());
+        payment.setPaymentPurpose(request.getPaymentPurpose());
+        payment.setAmount(request.getAmount());
+        payment.setCurrency(request.getCurrency());
+        payment.setCreatedBy(request.getCreatedBy());
+
+        Payment saved = paymentRepository.save(payment);
+        User user = userRepository.findById(saved.getUserId()).orElse(null);
+        return toResponse(saved, user);
+    }
+
+    public void deletePayment(String id) {
+        Payment payment = paymentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Payment with id " + id + " was not found"));
+        paymentRepository.delete(payment);
     }
 
     public UserPaymentSummary getUserSummary(Long userId) {
