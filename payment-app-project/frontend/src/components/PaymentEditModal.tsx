@@ -6,12 +6,10 @@ import {
   CURRENCY_LABELS,
   CURRENCY_SYMBOLS,
   PAYMENT_TYPE_LABELS,
-  PAYMENT_METHOD_LABELS,
   type CurrencyCode,
   type Payment,
   type PaymentPurpose,
   type PaymentType,
-  type PaymentMethod,
 } from "../types/Payment";
 
 interface FormErrors {
@@ -35,7 +33,6 @@ export default function PaymentEditModal({
   const [createdBy, setCreatedBy] = useState(payment.createdBy);
   const [isVisitor, setIsVisitor] = useState<boolean>(payment.isVisitor);
   const [paymentType, setPaymentType] = useState<PaymentType>(payment.paymentType);
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>((payment as any).paymentMethod ?? "DAILY");
   const [paymentPurpose, setPaymentPurpose] = useState<PaymentPurpose>(payment.paymentPurpose);
   const [paymentFrequency, setPaymentFrequency] = useState<import("../types/Payment").PaymentFrequency>(
     (payment as any).paymentFrequency ?? "ONE_TIME"
@@ -71,7 +68,6 @@ export default function PaymentEditModal({
         createdBy: createdBy.trim(),
         isVisitor,
         paymentType,
-        paymentMethod,
         paymentPurpose,
         paymentFrequency,
         amount: Number(amount),
@@ -138,25 +134,6 @@ export default function PaymentEditModal({
           </div>
         </div>
 
-        <div className="field">
-          <label className="field-label" htmlFor="editPaymentMethod">
-            Payment Method<span className="field-required">*</span>
-          </label>
-          <div className="select-wrap">
-            <select
-              id="editPaymentMethod"
-              className="select-input"
-              value={paymentMethod}
-              onChange={(e) => setPaymentMethod(e.target.value as PaymentMethod)}
-            >
-              {(Object.keys(PAYMENT_METHOD_LABELS) as (import("../types/Payment").PaymentMethod[])).map((m) => (
-                <option key={m} value={m}>
-                  {PAYMENT_METHOD_LABELS[m]}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
 
         <div className="field">
           <label className="field-label">

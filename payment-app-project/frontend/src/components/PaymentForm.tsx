@@ -103,15 +103,22 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
     if (isVisitor === null) {
       next.isVisitor = "Please select whether you are a visitor.";
     }
-    if (!phoneNumber.trim()) {
-      next.phoneNumber = "Phone number is required.";
-    } else if (!PHONE_PATTERN.test(phoneNumber.trim())) {
-      next.phoneNumber = "Enter a valid phone number (digits only, 7-15 characters).";
-    }
-    if (lookupStatus === "not-found" && isVisitor === false) {
-      next.phoneNumber = "This number is not registered. Please complete registration first.";
-    } else if (lookupStatus === "not-found" && !newUserName.trim()) {
-      next.name = "Enter a name to create this user.";
+    // Phone is required for non-visitors; optional for visitors
+    if (isVisitor === false) {
+      if (!phoneNumber.trim()) {
+        next.phoneNumber = "Phone number is required.";
+      } else if (!PHONE_PATTERN.test(phoneNumber.trim())) {
+        next.phoneNumber = "Enter a valid phone number (digits only, 7-15 characters).";
+      }
+      if (lookupStatus === "not-found") {
+        next.phoneNumber = "This number is not registered. Please complete registration first.";
+      }
+    } else {
+      // visitor: allow empty phone; if provided, validate format
+      if (phoneNumber.trim() && !PHONE_PATTERN.test(phoneNumber.trim())) {
+        next.phoneNumber = "Enter a valid phone number (digits only, 7-15 characters).";
+      }
+      // name is optional for visitors
     }
     if (!paymentType) {
       next.paymentType = "Select a payment type.";
@@ -145,11 +152,10 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
     try {
       const payment = await paymentService.create({
         createdBy: createdBy.trim(),
-        phoneNumber: phoneNumber.trim(),
-        fullName: lookupStatus === "not-found" ? newUserName.trim() : undefined,
+        phoneNumber: phoneNumber.trim() || undefined,
+        fullName: newUserName.trim() || undefined,
         isVisitor: Boolean(isVisitor),
         paymentType: paymentType as PaymentType,
-        paymentMethod: paymentMethod as import("../types/Payment").PaymentMethod,
         paymentPurpose: paymentPurpose as PaymentPurpose,
         paymentFrequency: paymentFrequency as import("../types/Payment").PaymentFrequency,
         amount: amountNumberSafe(amount),
@@ -320,29 +326,6 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
         {errors.paymentType && <div className="field-error">{errors.paymentType}</div>}
       </div>
 
-      {/* Payment method */}
-      <div className="field">
-        <label className="field-label" htmlFor="paymentMethod">
-          Payment Method<span className="field-required">*</span>
-        </label>
-        <div className="select-wrap">
-          <select
-            id="paymentMethod"
-            className={"select-input" + (errors.paymentType ? " has-error" : "")}
-            value={paymentMethod}
-            onChange={(e) => setPaymentMethod(e.target.value as PaymentMethod)}
-          >
-            <option value="" disabled>
-              Select a payment method
-            </option>
-            {(Object.keys(PAYMENT_METHOD_LABELS) as (import("../types/Payment").PaymentMethod[])).map((m) => (
-              <option key={m} value={m}>
-                {PAYMENT_METHOD_LABELS[m]}
-              </option>
-            ))}
-          </select>
-        </div>
-      </div>
 
       {/* Payment purpose */}
       <div className="field">
