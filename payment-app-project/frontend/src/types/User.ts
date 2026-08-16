@@ -19,6 +19,7 @@ export interface User {
 }
 
 export interface CreateUserRequest {
+  createdBy: string;
   fullName: string;
   email: string;
   phoneNumber: string;

@@ -7,7 +7,6 @@ import com.example.payment.exception.ResourceNotFoundException;
 import com.example.payment.model.User;
 import com.example.payment.repository.UserRepository;
 import com.example.payment.util.SequenceGeneratorService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -20,9 +19,6 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final SequenceGeneratorService sequenceGeneratorService;
-
-    @Value("${app.default-created-by}")
-    private String defaultCreatedBy;
 
     public UserService(UserRepository userRepository, SequenceGeneratorService sequenceGeneratorService) {
         this.userRepository = userRepository;
@@ -71,9 +67,7 @@ public class UserService {
                 .phoneNumber(normalizedPhone)
                 .address(request.getAddress())
                 .memberType(request.getMemberType())
-                // TODO: once authentication is added, resolve createdBy from the SecurityContext
-                // instead of this hardcoded default.
-                .createdBy(defaultCreatedBy)
+                .createdBy(request.getCreatedBy())
                 .created(LocalDateTime.now())
                 .build();
 
@@ -83,9 +77,10 @@ public class UserService {
     /**
      * Finds an existing user by phone, or creates a lightweight record on the fly.
      * Used by PaymentService when recording a payment for a brand-new user who hasn't
-     * gone through full registration yet.
+     * gone through full registration yet. {@code createdBy} is carried over from the
+     * payment request that triggered this lightweight creation.
      */
-    User findOrCreateUser(String phoneNumber, String fullName) {
+    User findOrCreateUser(String phoneNumber, String fullName, String createdBy) {
         String normalizedPhone = normalizePhone(phoneNumber);
         return userRepository.findByPhoneNumber(normalizedPhone)
                 .orElseGet(() -> {
@@ -98,7 +93,7 @@ public class UserService {
                             .id(sequenceGeneratorService.nextValue(USER_SEQUENCE))
                             .fullName(fullName)
                             .phoneNumber(normalizedPhone)
-                            .createdBy(defaultCreatedBy)
+                            .createdBy(createdBy)
                             .created(LocalDateTime.now())
                             .build();
                     return userRepository.save(user);

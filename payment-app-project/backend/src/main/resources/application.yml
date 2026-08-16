@@ -12,9 +12,6 @@ spring:
     mongodb:
       uri: mongodb+srv://kelennafavour:YOUR_PASSWORD@nehemiahbuilders.aefet2x.mongodb.net/nehemiah_builders?appName=nehemiahBuilders
 
-app:
-  default-created-by: Diana
-
 logging:
   level:
     root: INFO

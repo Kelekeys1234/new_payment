@@ -17,6 +17,7 @@ export interface Payment {
 }
 
 export interface CreatePaymentRequest {
+  createdBy: string;
   phoneNumber: string;
   fullName?: string;
   isVisitor: boolean;

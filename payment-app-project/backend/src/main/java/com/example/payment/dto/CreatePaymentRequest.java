@@ -15,8 +15,9 @@ import java.math.BigDecimal;
 /**
  * Payload for recording a new payment.
  * <p>
- * Note: id, created, and createdBy are intentionally NOT present here -
- * the backend generates/assigns those values.
+ * Note: id and created are intentionally NOT present here - the backend generates/assigns
+ * those values. createdBy, however, is supplied by the caller (recorded by whoever is
+ * entering the payment).
  * <p>
  * If the phone number does not match an existing user, {@code fullName} must be supplied
  * so a lightweight user record can be created as part of this request (a full registration,
@@ -24,6 +25,9 @@ import java.math.BigDecimal;
  */
 @Data
 public class CreatePaymentRequest {
+
+    @NotBlank(message = "Created by is required")
+    private String createdBy;
 
     @NotBlank(message = "Phone number is required")
     @Pattern(

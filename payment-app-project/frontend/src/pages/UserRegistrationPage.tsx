@@ -8,6 +8,7 @@ const PHONE_PATTERN = /^\+?[0-9]{7,15}$/;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 interface FormErrors {
+  createdBy?: string;
   fullName?: string;
   email?: string;
   phoneNumber?: string;
@@ -24,6 +25,7 @@ export default function UserRegistrationPage() {
   const location = useLocation();
   const redirectState = (location.state as RedirectState | null) ?? null;
 
+  const [createdBy, setCreatedBy] = useState("");
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [phoneNumber, setPhoneNumber] = useState(redirectState?.phoneNumber ?? "");
@@ -37,6 +39,7 @@ export default function UserRegistrationPage() {
 
   function validate(): boolean {
     const next: FormErrors = {};
+    if (!createdBy.trim()) next.createdBy = "Created by is required.";
     if (!fullName.trim()) next.fullName = "Full name is required.";
     if (!email.trim()) {
       next.email = "Email is required.";
@@ -63,6 +66,7 @@ export default function UserRegistrationPage() {
     setSubmitting(true);
     try {
       const user = await userService.create({
+        createdBy: createdBy.trim(),
         fullName: fullName.trim(),
         email: email.trim(),
         phoneNumber: phoneNumber.trim(),
@@ -78,6 +82,7 @@ export default function UserRegistrationPage() {
   }
 
   function resetForm() {
+    setCreatedBy("");
     setFullName("");
     setEmail("");
     setPhoneNumber("");
@@ -128,6 +133,21 @@ export default function UserRegistrationPage() {
       </div>
 
       <form className="card" onSubmit={handleSubmit} noValidate>
+        <div className="field">
+          <label className="field-label" htmlFor="createdBy">
+            Created By<span className="field-required">*</span>
+          </label>
+          <input
+            id="createdBy"
+            className={"text-input" + (errors.createdBy ? " has-error" : "")}
+            type="text"
+            placeholder="Your name"
+            value={createdBy}
+            onChange={(e) => setCreatedBy(e.target.value)}
+          />
+          {errors.createdBy && <div className="field-error">{errors.createdBy}</div>}
+        </div>
+
         <div className="field">
           <label className="field-label" htmlFor="fullName">
             Full name<span className="field-required">*</span>

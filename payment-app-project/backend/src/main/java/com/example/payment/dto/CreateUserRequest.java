@@ -13,6 +13,9 @@ import lombok.Data;
 @Data
 public class CreateUserRequest {
 
+    @NotBlank(message = "Created by is required")
+    private String createdBy;
+
     @NotBlank(message = "Full name is required")
     private String fullName;
 

@@ -11,7 +11,6 @@ import com.example.payment.model.User;
 import com.example.payment.repository.PaymentRepository;
 import com.example.payment.repository.UserRepository;
 import com.example.payment.util.SequenceGeneratorService;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -32,9 +31,6 @@ public class PaymentService {
     private final UserRepository userRepository;
     private final UserService userService;
     private final SequenceGeneratorService sequenceGeneratorService;
-
-    @Value("${app.default-created-by}")
-    private String defaultCreatedBy;
 
     public PaymentService(PaymentRepository paymentRepository, UserRepository userRepository,
                            UserService userService, SequenceGeneratorService sequenceGeneratorService) {
@@ -93,7 +89,7 @@ public class PaymentService {
     }
 
     public PaymentResponse createPayment(CreatePaymentRequest request) {
-        User user = userService.findOrCreateUser(request.getPhoneNumber(), request.getFullName());
+        User user = userService.findOrCreateUser(request.getPhoneNumber(), request.getFullName(), request.getCreatedBy());
 
         Payment payment = Payment.builder()
                 .id(generateNextPaymentId())
@@ -103,9 +99,7 @@ public class PaymentService {
                 .paymentPurpose(request.getPaymentPurpose())
                 .amount(request.getAmount())
                 .currency(request.getCurrency())
-                // createdBy is set here by the server - never trusted from the client.
-                // TODO: once authentication is added, resolve from the SecurityContext.
-                .createdBy(defaultCreatedBy)
+                .createdBy(request.getCreatedBy())
                 .created(LocalDateTime.now())
                 .build();
 

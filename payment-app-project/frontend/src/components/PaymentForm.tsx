@@ -17,6 +17,7 @@ import type { User } from "../types/User";
 type LookupStatus = "idle" | "checking" | "found" | "not-found";
 
 interface FormErrors {
+  createdBy?: string;
   isVisitor?: string;
   phoneNumber?: string;
   name?: string;
@@ -30,6 +31,7 @@ const PHONE_PATTERN = /^\+?[0-9]{7,15}$/;
 
 export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void }) {
   const navigate = useNavigate();
+  const [createdBy, setCreatedBy] = useState("");
   const [isVisitor, setIsVisitor] = useState<boolean | null>(null);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [lookupStatus, setLookupStatus] = useState<LookupStatus>("idle");
@@ -93,6 +95,9 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
   function validate(): boolean {
     const next: FormErrors = {};
 
+    if (!createdBy.trim()) {
+      next.createdBy = "Created by is required.";
+    }
     if (isVisitor === null) {
       next.isVisitor = "Please select whether you are a visitor.";
     }
@@ -134,6 +139,7 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
     setSubmitting(true);
     try {
       const payment = await paymentService.create({
+        createdBy: createdBy.trim(),
         phoneNumber: phoneNumber.trim(),
         fullName: lookupStatus === "not-found" ? newUserName.trim() : undefined,
         isVisitor: Boolean(isVisitor),
@@ -152,6 +158,7 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
   }
 
   function resetForm() {
+    setCreatedBy("");
     setIsVisitor(null);
     setPhoneNumber("");
     setLookupStatus("idle");
@@ -172,6 +179,22 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
 
   return (
     <form className="card" onSubmit={handleSubmit} noValidate>
+      {/* Created by */}
+      <div className="field">
+        <label className="field-label" htmlFor="createdBy">
+          Created By<span className="field-required">*</span>
+        </label>
+        <input
+          id="createdBy"
+          className={"text-input" + (errors.createdBy ? " has-error" : "")}
+          type="text"
+          placeholder="Your name"
+          value={createdBy}
+          onChange={(e) => setCreatedBy(e.target.value)}
+        />
+        {errors.createdBy && <div className="field-error">{errors.createdBy}</div>}
+      </div>
+
       {/* Visitor */}
       <div className="field">
         <label className="field-label">
@@ -361,13 +384,6 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
           </select>
         </div>
         {errors.currency && <div className="field-error">{errors.currency}</div>}
-      </div>
-
-      {/* Created by (read-only display) */}
-      <div className="field">
-        <label className="field-label">Created By</label>
-        <input className="text-input" value="Diana" disabled />
-        <div className="field-hint">Recorded automatically. This will use your signed-in identity once login is added.</div>
       </div>
 
       {submitError && (
