@@ -23,6 +23,7 @@ interface FormErrors {
   name?: string;
   paymentType?: string;
   paymentPurpose?: string;
+  paymentFrequency?: string;
   amount?: string;
   currency?: string;
 }
@@ -40,6 +41,7 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
 
   const [paymentType, setPaymentType] = useState<PaymentType | "">("");
   const [paymentPurpose, setPaymentPurpose] = useState<PaymentPurpose | "">("");
+  const [paymentFrequency, setPaymentFrequency] = useState<import("../types/Payment").PaymentFrequency | "">("");
   const [amount, setAmount] = useState("");
   const [currency, setCurrency] = useState<CurrencyCode>("NGN");
 
@@ -117,6 +119,9 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
     if (!paymentPurpose) {
       next.paymentPurpose = "Select a payment purpose.";
     }
+    if (!paymentFrequency) {
+      next.paymentFrequency = "Select a payment frequency.";
+    }
     const amountNum = Number(amount);
     if (!amount.trim()) {
       next.amount = "Amount is required.";
@@ -145,6 +150,7 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
         isVisitor: Boolean(isVisitor),
         paymentType: paymentType as PaymentType,
         paymentPurpose: paymentPurpose as PaymentPurpose,
+        paymentFrequency: paymentFrequency as import("../types/Payment").PaymentFrequency,
         amount: amountNumberSafe(amount),
         currency,
       });
@@ -339,6 +345,28 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
           </label>
         </div>
         {errors.paymentPurpose && <div className="field-error">{errors.paymentPurpose}</div>}
+      </div>
+
+      {/* Payment frequency */}
+      <div className="field">
+        <label className="field-label" htmlFor="paymentFrequency">
+          Payment Frequency<span className="field-required">*</span>
+        </label>
+        <div className="select-wrap">
+          <select
+            id="paymentFrequency"
+            className={"select-input" + (errors.paymentFrequency ? " has-error" : "")}
+            value={paymentFrequency}
+            onChange={(e) => setPaymentFrequency(e.target.value as any)}
+          >
+            <option value="">Select frequency</option>
+            <option value="ONE_TIME">One-time</option>
+            <option value="DAILY">Daily</option>
+            <option value="WEEKLY">Weekly</option>
+            <option value="MONTHLY">Monthly</option>
+          </select>
+        </div>
+        {errors.paymentFrequency && <div className="field-error">{errors.paymentFrequency}</div>}
       </div>
 
       {/* Amount */}

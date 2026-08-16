@@ -1,6 +1,7 @@
 package com.example.payment.dto;
 
 import com.example.payment.model.Currency;
+import com.example.payment.model.PaymentMethod;
 import com.example.payment.model.PaymentPurpose;
 import com.example.payment.model.PaymentType;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -48,8 +49,14 @@ public class CreatePaymentRequest {
     @NotNull(message = "Payment type is required")
     private PaymentType paymentType;
 
+    @NotNull(message = "Method of payment is required")
+    private PaymentMethod paymentMethod;
+
     @NotNull(message = "Payment purpose is required")
     private PaymentPurpose paymentPurpose;
+
+    @NotNull(message = "Payment frequency is required")
+    private com.example.payment.model.PaymentFrequency paymentFrequency;
 
     @NotNull(message = "Amount is required")
     @DecimalMin(value = "0.01", message = "Amount must be greater than zero")

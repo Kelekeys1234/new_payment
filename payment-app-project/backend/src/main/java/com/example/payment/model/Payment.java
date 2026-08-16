@@ -29,7 +29,9 @@ public class Payment {
 
     private boolean visitor;
     private PaymentType paymentType;
+    private PaymentMethod paymentMethod;
     private PaymentPurpose paymentPurpose;
+    private PaymentFrequency paymentFrequency;
     private BigDecimal amount;
     private Currency currency;
     private String createdBy;

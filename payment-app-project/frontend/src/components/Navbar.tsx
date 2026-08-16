@@ -7,12 +7,14 @@ const links = [
   { to: "/register", label: "Register User" },
 ];
 
+import logoUrl from "../assets/logo.svg";
+
 export default function Navbar() {
   return (
     <header className="navbar">
       <div className="navbar-inner">
         <NavLink to="/" className="navbar-brand">
-          <span className="navbar-mark">₦</span>
+          <img src={logoUrl} alt="Nehemiah Building" className="navbar-logo" />
           NEHEMIAH BUILDING
         </NavLink>
         <nav className="navbar-links">

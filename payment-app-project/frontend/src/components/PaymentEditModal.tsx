@@ -34,6 +34,9 @@ export default function PaymentEditModal({
   const [isVisitor, setIsVisitor] = useState<boolean>(payment.isVisitor);
   const [paymentType, setPaymentType] = useState<PaymentType>(payment.paymentType);
   const [paymentPurpose, setPaymentPurpose] = useState<PaymentPurpose>(payment.paymentPurpose);
+  const [paymentFrequency, setPaymentFrequency] = useState<import("../types/Payment").PaymentFrequency>(
+    (payment as any).paymentFrequency ?? "ONE_TIME"
+  );
   const [amount, setAmount] = useState(String(payment.amount));
   const [currency, setCurrency] = useState<CurrencyCode>(payment.currency);
 
@@ -66,6 +69,7 @@ export default function PaymentEditModal({
         isVisitor,
         paymentType,
         paymentPurpose,
+        paymentFrequency,
         amount: Number(amount),
         currency,
       });
@@ -153,6 +157,25 @@ export default function PaymentEditModal({
               />
               <span className="radio-option-label">Donation</span>
             </label>
+          </div>
+        </div>
+
+        <div className="field">
+          <label className="field-label" htmlFor="editPaymentFrequency">
+            Payment Frequency<span className="field-required">*</span>
+          </label>
+          <div className="select-wrap">
+            <select
+              id="editPaymentFrequency"
+              className="select-input"
+              value={paymentFrequency}
+              onChange={(e) => setPaymentFrequency(e.target.value as any)}
+            >
+              <option value="ONE_TIME">One-time</option>
+              <option value="DAILY">Daily</option>
+              <option value="WEEKLY">Weekly</option>
+              <option value="MONTHLY">Monthly</option>
+            </select>
           </div>
         </div>
 

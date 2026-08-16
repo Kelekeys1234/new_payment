@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { CURRENCY_SYMBOLS, PAYMENT_TYPE_LABELS, type Payment } from "../types/Payment";
+import { CURRENCY_SYMBOLS, PAYMENT_TYPE_LABELS, PAYMENT_FREQUENCY_LABELS, type Payment } from "../types/Payment";
 
 export default function PaymentTable({
   payments,
@@ -33,10 +33,11 @@ export default function PaymentTable({
             <th>Visitor</th>
             <th>Payment Type</th>
             <th>Purpose</th>
-            <th>Amount</th>
-            <th>Created By</th>
-            <th>Created</th>
-            {showActions && <th>Actions</th>}
+          <th>Frequency</th>
+          <th>Amount</th>
+          <th>Created By</th>
+          <th>Created</th>
+          {showActions && <th>Actions</th>}
           </tr>
         </thead>
         <tbody>
@@ -66,9 +67,10 @@ export default function PaymentTable({
                   {p.paymentPurpose === "LOAN" ? "Loan" : "Donation"}
                 </span>
               </td>
+              <td>{PAYMENT_FREQUENCY_LABELS[p.paymentFrequency]}</td>
               <td className="mono">
                 {CURRENCY_SYMBOLS[p.currency]}
-                {p.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}{" "}
+                {p.amount.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} {" "}
                 {p.currency}
               </td>
               <td>{p.createdBy}</td>
