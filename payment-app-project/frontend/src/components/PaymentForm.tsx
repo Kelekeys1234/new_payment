@@ -341,9 +341,9 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
             <option value="" disabled>
               Select a payment method
             </option>
-            {(Object.keys(PAYMENT_METHOD_LABELS) as (keyof typeof PAYMENT_METHOD_LABELS)[]).map((m) => (
+            {(Object.keys(PAYMENT_METHOD_LABELS) as (import("../types/Payment").PaymentMethod[])).map((m) => (
               <option key={m} value={m}>
-                {PAYMENT_METHOD_LABELS[m as any]}
+                {PAYMENT_METHOD_LABELS[m]}
               </option>
             ))}
           </select>
