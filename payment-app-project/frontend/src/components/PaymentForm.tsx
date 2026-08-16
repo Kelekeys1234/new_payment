@@ -7,10 +7,12 @@ import {
   CURRENCY_LABELS,
   CURRENCY_SYMBOLS,
   PAYMENT_TYPE_LABELS,
+  PAYMENT_METHOD_LABELS,
   type CurrencyCode,
   type Payment,
   type PaymentPurpose,
   type PaymentType,
+  type PaymentMethod,
 } from "../types/Payment";
 import type { User } from "../types/User";
 
@@ -40,6 +42,7 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
   const [newUserName, setNewUserName] = useState("");
 
   const [paymentType, setPaymentType] = useState<PaymentType | "">("");
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | "">("");
   const [paymentPurpose, setPaymentPurpose] = useState<PaymentPurpose | "">("");
   const [paymentFrequency, setPaymentFrequency] = useState<import("../types/Payment").PaymentFrequency | "">("");
   const [amount, setAmount] = useState("");
@@ -116,6 +119,9 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
     if (!paymentType) {
       next.paymentType = "Select a payment type.";
     }
+    if (!paymentMethod) {
+      next.paymentType = "Select a payment method.";
+    }
     if (!paymentPurpose) {
       next.paymentPurpose = "Select a payment purpose.";
     }
@@ -149,6 +155,7 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
         fullName: lookupStatus === "not-found" ? newUserName.trim() : undefined,
         isVisitor: Boolean(isVisitor),
         paymentType: paymentType as PaymentType,
+        paymentMethod: paymentMethod as import("../types/Payment").PaymentMethod,
         paymentPurpose: paymentPurpose as PaymentPurpose,
         paymentFrequency: paymentFrequency as import("../types/Payment").PaymentFrequency,
         amount: amountNumberSafe(amount),
@@ -317,6 +324,30 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
           </select>
         </div>
         {errors.paymentType && <div className="field-error">{errors.paymentType}</div>}
+      </div>
+
+      {/* Payment method */}
+      <div className="field">
+        <label className="field-label" htmlFor="paymentMethod">
+          Payment Method<span className="field-required">*</span>
+        </label>
+        <div className="select-wrap">
+          <select
+            id="paymentMethod"
+            className={"select-input" + (errors.paymentType ? " has-error" : "")}
+            value={paymentMethod}
+            onChange={(e) => setPaymentMethod(e.target.value as PaymentMethod)}
+          >
+            <option value="" disabled>
+              Select a payment method
+            </option>
+            {(Object.keys(PAYMENT_METHOD_LABELS) as (keyof typeof PAYMENT_METHOD_LABELS)[]).map((m) => (
+              <option key={m} value={m}>
+                {PAYMENT_METHOD_LABELS[m as any]}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
 
       {/* Payment purpose */}
