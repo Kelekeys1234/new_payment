@@ -29,11 +29,7 @@ public class CreatePaymentRequest {
     @NotBlank(message = "Created by is required")
     private String createdBy;
 
-    @NotBlank(message = "Phone number is required")
-    @Pattern(
-            regexp = "^\\+?[0-9]{7,15}$",
-            message = "Phone number must contain only digits (optionally prefixed with +) and be 7-15 digits long"
-    )
+    // Phone number is optional for visitors; frontend enforces it for non-visitors.
     private String phoneNumber;
 
     /**

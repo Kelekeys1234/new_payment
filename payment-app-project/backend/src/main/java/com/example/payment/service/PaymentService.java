@@ -52,7 +52,10 @@ public class PaymentService {
     public PaymentResponse getPaymentById(String id) {
         Payment payment = paymentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Payment with id " + id + " was not found"));
-        User user = userRepository.findById(payment.getUserId()).orElse(null);
+        User user = null;
+        if (payment.getUserId() != null) {
+            user = userRepository.findById(payment.getUserId()).orElse(null);
+        }
         return toResponse(payment, user);
     }
 
@@ -90,11 +93,27 @@ public class PaymentService {
     }
 
     public PaymentResponse createPayment(CreatePaymentRequest request) {
-        User user = userService.findOrCreateUser(request.getPhoneNumber(), request.getFullName(), request.getCreatedBy());
+        User user = null;
+        String phone = request.getPhoneNumber();
 
-        Payment payment = Payment.builder()
+        if (phone != null && !phone.isBlank()) {
+            String normalized = phone.replaceAll("[\\s\\-()]", "");
+            user = userRepository.findByPhoneNumber(normalized).orElse(null);
+            if (user == null && request.getFullName() != null && !request.getFullName().isBlank()) {
+                // Create a lightweight user when fullName provided
+                user = userService.findOrCreateUser(phone, request.getFullName(), request.getCreatedBy());
+            }
+            // If user still null and caller is a non-visitor, fail early with helpful message
+            if (user == null && Boolean.FALSE.equals(request.getIsVisitor())) {
+                throw new IllegalArgumentException("No user found with phone number " + phone + ". Please register first or provide a full name to create a user.");
+            }
+        } else if (Boolean.FALSE.equals(request.getIsVisitor())) {
+            // Non-visitors must provide a phone number
+            throw new IllegalArgumentException("Phone number is required for registered members/workers.");
+        }
+
+        Payment.PaymentBuilder builder = Payment.builder()
                 .id(generateNextPaymentId())
-                .userId(user.getId())
                 .visitor(Boolean.TRUE.equals(request.getIsVisitor()))
                 .paymentType(request.getPaymentType())
                 .paymentPurpose(request.getPaymentPurpose())
@@ -102,8 +121,11 @@ public class PaymentService {
                 .amount(request.getAmount())
                 .currency(request.getCurrency())
                 .createdBy(request.getCreatedBy())
-                .created(LocalDateTime.now())
-                .build();
+                .created(LocalDateTime.now());
+
+        if (user != null) builder.userId(user.getId());
+
+        Payment payment = builder.build();
 
         Payment saved = paymentRepository.save(payment);
         return toResponse(saved, user);
