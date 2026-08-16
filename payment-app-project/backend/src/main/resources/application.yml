@@ -10,7 +10,7 @@ spring:
       write-dates-as-timestamps: false
   data:
     mongodb:
-      uri: mongodb+srv://kelennafavour:YOUR_PASSWORD@nehemiahbuilders.aefet2x.mongodb.net/nehemiah_builders?appName=nehemiahBuilders
+      uri:  mongodb+srv://kelennafavour:Mamawowosani1234%40@nehemiahbuilders.aefet2x.mongodb.net/nehemiah_builders?appName=nehemiahBuilders
 
 logging:
   level:
