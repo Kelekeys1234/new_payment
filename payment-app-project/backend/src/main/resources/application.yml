@@ -1,0 +1,24 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: nehemiah-building-payment
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      write-dates-as-timestamps: false
+  data:
+    mongodb:
+      # Full connection string, e.g. mongodb+srv://user:pass@cluster.mongodb.net/nehemiah_building
+      # or mongodb://localhost:27017/nehemiah_building for a local/self-hosted instance.
+      uri: ${MONGODB_URI:mongodb://localhost:27017/nehemiah_building}
+
+app:
+  # Hardcoded for v1. Replace with SecurityContext lookup once auth is added.
+  default-created-by: Diana
+
+logging:
+  level:
+    root: INFO
+    com.example.payment: DEBUG
