@@ -49,6 +49,7 @@ body,
 
 body {
   margin: 0;
+  overflow-x: hidden;
   background: var(--bg);
   background-image:
     radial-gradient(circle at 12% 8%, rgba(108, 76, 241, 0.07), transparent 40%),
@@ -686,6 +687,7 @@ table.data-table {
 
 .table-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
 }
 
@@ -772,6 +774,8 @@ table.data-table {
   align-items: center;
   gap: 10px;
   animation: toast-in 0.2s ease;
+  max-width: calc(100vw - 40px);
+  word-break: break-word;
 }
 
 .toast.error {
@@ -833,6 +837,7 @@ table.data-table {
 
 .user-list-row {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 10px;
 }
@@ -843,7 +848,7 @@ table.data-table {
 
 .user-list-item {
   display: flex;
-  flex: 1;
+  flex: 1 1 240px;
   min-width: 0;
   align-items: center;
   justify-content: space-between;
