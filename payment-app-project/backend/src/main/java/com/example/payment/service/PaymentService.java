@@ -13,6 +13,7 @@ import com.example.payment.repository.PaymentRepository;
 import com.example.payment.repository.UserRepository;
 import com.example.payment.util.SequenceGeneratorService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -32,13 +33,16 @@ public class PaymentService {
     private final UserRepository userRepository;
     private final UserService userService;
     private final SequenceGeneratorService sequenceGeneratorService;
+    private final ReceiptVerificationService receiptVerificationService;
 
     public PaymentService(PaymentRepository paymentRepository, UserRepository userRepository,
-                           UserService userService, SequenceGeneratorService sequenceGeneratorService) {
+                           UserService userService, SequenceGeneratorService sequenceGeneratorService,
+                           ReceiptVerificationService receiptVerificationService) {
         this.paymentRepository = paymentRepository;
         this.userRepository = userRepository;
         this.userService = userService;
         this.sequenceGeneratorService = sequenceGeneratorService;
+        this.receiptVerificationService = receiptVerificationService;
     }
 
     public List<PaymentResponse> getAllPayments() {
@@ -92,7 +96,8 @@ public class PaymentService {
                 .toList();
     }
 
-    public PaymentResponse createPayment(CreatePaymentRequest request) {
+    public PaymentResponse createPayment(CreatePaymentRequest request, MultipartFile receipt) {
+        String receiptFileName = receiptVerificationService.verifyAndStore(receipt, request.getAmount(), request.getCurrency());
         User user = null;
         String phone = request.getPhoneNumber();
 
@@ -120,6 +125,7 @@ public class PaymentService {
                 .paymentFrequency(request.getPaymentFrequency())
                 .amount(request.getAmount())
                 .currency(request.getCurrency())
+                .receiptFileName(receiptFileName)
                 .createdBy(request.getCreatedBy())
                 .created(LocalDateTime.now());
 
@@ -221,6 +227,7 @@ public class PaymentService {
                 .paymentFrequency(payment.getPaymentFrequency())
                 .amount(payment.getAmount())
                 .currency(payment.getCurrency())
+                .receiptFileName(payment.getReceiptFileName())
                 .createdBy(payment.getCreatedBy())
                 .created(payment.getCreated())
                 .build();

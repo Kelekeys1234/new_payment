@@ -281,6 +281,10 @@ a {
   border-color: var(--danger);
 }
 
+.receipt-input { padding: 9px 12px; cursor: pointer; }
+.receipt-input::file-selector-button { margin-right: 12px; border: 0; border-radius: 5px; padding: 7px 10px; background: var(--primary-soft); color: var(--primary-soft-text); font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+.receipt-file-name { margin-top: 8px; color: var(--success); font-size: 13px; font-weight: 600; }
+
 .select-wrap {
   position: relative;
 }

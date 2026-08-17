@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -47,9 +49,11 @@ public class PaymentController {
         return ResponseEntity.ok(paymentService.search(query));
     }
 
-    @PostMapping
-    public ResponseEntity<PaymentResponse> createPayment(@Valid @RequestBody CreatePaymentRequest request) {
-        PaymentResponse created = paymentService.createPayment(request);
+    @PostMapping(consumes = "multipart/form-data")
+    public ResponseEntity<PaymentResponse> createPayment(
+            @Valid @RequestPart("payment") CreatePaymentRequest request,
+            @RequestPart("receipt") MultipartFile receipt) {
+        PaymentResponse created = paymentService.createPayment(request, receipt);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 

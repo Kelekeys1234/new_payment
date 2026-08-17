@@ -11,6 +11,14 @@ spring:
   data:
     mongodb:
       uri:  mongodb+srv://kelennafavour:Mamawowosani1234%40@nehemiahbuilders.aefet2x.mongodb.net/nehemiah_builders?appName=nehemiahBuilders
+  servlet:
+    multipart:
+      max-file-size: 8MB
+      max-request-size: 9MB
+
+app:
+  receipts:
+    upload-dir: ${RECEIPT_UPLOAD_DIR:./uploads/receipts}
 
 logging:
   level:

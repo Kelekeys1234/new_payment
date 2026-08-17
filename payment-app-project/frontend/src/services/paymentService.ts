@@ -22,8 +22,13 @@ export const paymentService = {
     return data;
   },
 
-  async create(request: CreatePaymentRequest): Promise<Payment> {
-    const { data } = await api.post<Payment>("/payments", request);
+  async create(request: CreatePaymentRequest, receipt: File): Promise<Payment> {
+    const form = new FormData();
+    form.append("payment", new Blob([JSON.stringify(request)], { type: "application/json" }));
+    form.append("receipt", receipt);
+    const { data } = await api.post<Payment>("/payments", form, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
     return data;
   },
 

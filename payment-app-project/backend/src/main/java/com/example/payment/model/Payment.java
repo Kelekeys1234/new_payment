@@ -33,6 +33,7 @@ public class Payment {
     private PaymentFrequency paymentFrequency;
     private BigDecimal amount;
     private Currency currency;
+    private String receiptFileName;
     private String createdBy;
     private LocalDateTime created;
 }

@@ -32,6 +32,7 @@ public class PaymentResponse {
     private com.example.payment.model.PaymentFrequency paymentFrequency;
     private BigDecimal amount;
     private Currency currency;
+    private String receiptFileName;
     private String createdBy;
     private LocalDateTime created;
 }

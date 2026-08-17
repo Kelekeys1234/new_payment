@@ -14,6 +14,7 @@ export interface Payment {
   paymentFrequency: PaymentFrequency;
   amount: number;
   currency: CurrencyCode;
+  receiptFileName?: string;
   createdBy: string;
   created: string; // ISO datetime
 }
