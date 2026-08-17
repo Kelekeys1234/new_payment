@@ -38,4 +38,15 @@ public class User {
     private String createdBy;
 
     private LocalDateTime created;
+
+    private String passwordHash;
+
+    @Builder.Default
+    private Boolean admin = false;
+
+    private String otpCode;
+
+    private LocalDateTime otpExpiresAt;
+
+    private LocalDateTime otpRequestedAt;
 }

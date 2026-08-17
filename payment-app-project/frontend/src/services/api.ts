@@ -1,4 +1,5 @@
 import axios from "axios";
+import { clearStoredAuth, getToken } from "./authStorage";
 
 const baseURL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
 
@@ -8,6 +9,24 @@ export const api = axios.create({
     "Content-Type": "application/json",
   },
 });
+
+api.interceptors.request.use((config) => {
+  const token = getToken();
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (axios.isAxiosError(error) && error.response?.status === 401) {
+      clearStoredAuth();
+    }
+    return Promise.reject(error);
+  }
+);
 
 /**
  * Shape of the error body returned by the backend's GlobalExceptionHandler.

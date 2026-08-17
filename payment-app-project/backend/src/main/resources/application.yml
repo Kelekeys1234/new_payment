@@ -19,6 +19,11 @@ spring:
 app:
   receipts:
     upload-dir: ${RECEIPT_UPLOAD_DIR:./uploads/receipts}
+  security:
+    # IMPORTANT: override APP_JWT_SECRET in any real deployment (HS256 needs >= 32 bytes).
+    jwt-secret: ${APP_JWT_SECRET:dev-only-change-me-32-bytes-minimum-secret-key}
+    jwt-expiration-minutes: ${APP_JWT_EXPIRATION_MINUTES:43200}
+    super-admin-phone: ${APP_SUPER_ADMIN_PHONE:+2349078902655}
 
 logging:
   level:

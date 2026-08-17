@@ -9,6 +9,7 @@ import com.example.payment.exception.ResourceNotFoundException;
 import com.example.payment.model.User;
 import com.example.payment.repository.PaymentRepository;
 import com.example.payment.repository.UserRepository;
+import com.example.payment.util.PhoneUtils;
 import com.example.payment.util.SequenceGeneratorService;
 import org.springframework.stereotype.Service;
 
@@ -156,7 +157,7 @@ public class UserService {
     }
 
     private String normalizePhone(String phone) {
-        return phone == null ? null : phone.replaceAll("[\\s\\-()]", "");
+        return PhoneUtils.normalize(phone);
     }
 
     private UserResponse toResponse(User user) {

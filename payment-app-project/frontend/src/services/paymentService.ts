@@ -17,6 +17,11 @@ export const paymentService = {
     return data;
   },
 
+  async getMe(): Promise<Payment[]> {
+    const { data } = await api.get<Payment[]>("/payments/me");
+    return data;
+  },
+
   async search(query: string): Promise<Payment[]> {
     const { data } = await api.get<Payment[]>("/payments/search", { params: { query } });
     return data;

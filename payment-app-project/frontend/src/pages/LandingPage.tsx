@@ -22,7 +22,12 @@ const pillars = [
 export default function LandingPage() {
   return (
     <div className="landing-page">
-      <section className="landing-hero">
+      <section
+        className="landing-hero"
+        style={{
+          backgroundImage: `linear-gradient(118deg, rgba(20,62,57,.88) 0%, rgba(27,90,80,.65) 55%, rgba(35,113,102,.45) 100%), url(${partnersImage})`,
+        }}
+      >
         <div className="landing-orb landing-orb-one" />
         <div className="landing-orb landing-orb-two" />
         <div className="landing-hero-content">
@@ -36,7 +41,6 @@ export default function LandingPage() {
             <a href="#vision" className="landing-button landing-button-quiet">Our vision <span>↓</span></a>
           </div>
         </div>
-        <img className="landing-hero-image" src={partnersImage} alt="Nehemiah Builders Partners" />
         <div className="hero-scripture">
           <span className="scripture-mark">“</span>
           <p>Freely ye have received, freely give.</p>

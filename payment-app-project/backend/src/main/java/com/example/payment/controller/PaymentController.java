@@ -3,11 +3,13 @@ package com.example.payment.controller;
 import com.example.payment.dto.CreatePaymentRequest;
 import com.example.payment.dto.PaymentResponse;
 import com.example.payment.dto.UpdatePaymentRequest;
+import com.example.payment.security.CurrentUser;
 import com.example.payment.service.PaymentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,6 +34,11 @@ public class PaymentController {
     @GetMapping
     public ResponseEntity<List<PaymentResponse>> getAllPayments() {
         return ResponseEntity.ok(paymentService.getAllPayments());
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<List<PaymentResponse>> getMyPayments(@AuthenticationPrincipal CurrentUser currentUser) {
+        return ResponseEntity.ok(paymentService.getPaymentsByUserId(currentUser.id()));
     }
 
     @GetMapping("/{id}")

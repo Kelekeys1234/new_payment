@@ -1,16 +1,26 @@
-import { NavLink } from "react-router-dom";
-
-const links = [
-  { to: "/", label: "Home", end: true },
-  { to: "/give", label: "Give" },
-  { to: "/payments", label: "Payment History" },
-  { to: "/users", label: "Users" },
-  { to: "/register", label: "Join Us" },
-];
+import { NavLink, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 import logoUrl from "../assets/calvary-point-assembly.jpg";
 
 export default function Navbar() {
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const links = [
+    { to: "/", label: "Home", end: true },
+    { to: "/give", label: "Give" },
+    ...(user ? [{ to: "/my-payments", label: "My Payments" }] : []),
+    ...(user?.admin ? [{ to: "/payments", label: "Payment History" }, { to: "/users", label: "Users" }] : []),
+    ...(user?.superAdmin ? [{ to: "/admin/grant-admin", label: "Grant Admin" }] : []),
+    { to: "/register", label: "Join Us" },
+  ];
+
+  function handleLogout() {
+    logout();
+    navigate("/");
+  }
+
   return (
     <header className="navbar">
       <div className="navbar-inner">
@@ -29,6 +39,15 @@ export default function Navbar() {
               {link.label}
             </NavLink>
           ))}
+          {user ? (
+            <button className="navbar-link" type="button" onClick={handleLogout}>
+              Logout
+            </button>
+          ) : (
+            <NavLink to="/login" className={({ isActive }) => "navbar-link" + (isActive ? " active" : "")}>
+              Login
+            </NavLink>
+          )}
         </nav>
       </div>
     </header>
