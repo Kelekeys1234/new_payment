@@ -135,8 +135,9 @@ a {
   width: 36px;
   height: 36px;
   display: inline-block;
-  border-radius: 8px;
-  box-shadow: var(--shadow-pop);
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 3px 12px rgba(16, 49, 45, .22);
 }
 
 .navbar-links {
@@ -950,10 +951,6 @@ table.data-table {
 .landing-orb { position: absolute; border-radius: 50%; border: 1px solid rgba(236,185,79,.22); }
 .landing-orb-one { width: 490px; height: 490px; right: -180px; top: -150px; box-shadow: inset 0 0 0 46px rgba(236,185,79,.035), inset 0 0 0 100px rgba(236,185,79,.025); }
 .landing-orb-two { width: 280px; height: 280px; right: 13%; bottom: -182px; }
-.hero-emblem-wrap { position: absolute; z-index: 1; top: 50%; right: max(11vw, 70px); width: min(26vw, 330px); transform: translateY(-48%); }
-.hero-emblem-glow { position: absolute; inset: 11%; border-radius: 50%; background: #ecb94f; filter: blur(40px); opacity: .28; }
-.hero-emblem { position: relative; display: block; width: 100%; aspect-ratio: 1; object-fit: cover; mix-blend-mode: screen; border-radius: 50%; border: 1px solid rgba(236,185,79,.55); box-shadow: 0 28px 70px rgba(0,0,0,.4); }
-.hero-emblem-caption { display: block; position: relative; width: max-content; margin: -9px auto 0; padding: 7px 13px; background: #ecb94f; color: #174c45; text-transform: uppercase; letter-spacing: .12em; font-size: 9px; font-weight: 800; }
 
 .landing-banner { display: flex; justify-content: center; align-items: center; gap: clamp(10px, 3vw, 32px); padding: 20px; background: #ecb94f; color: #174c45; text-transform: uppercase; letter-spacing: .13em; font-size: clamp(9px, 1.4vw, 13px); font-weight: 800; text-align: center; }
 .landing-banner i { width: 4px; height: 4px; border-radius: 50%; background: currentColor; }
@@ -986,7 +983,6 @@ table.data-table {
 @media (max-width: 700px) {
   .landing-hero { min-height: 590px; padding-top: 62px; padding-bottom: 170px; }
   .hero-scripture { right: 28px; bottom: 35px; max-width: 225px; }
-  .hero-emblem-wrap { width: 180px; right: -42px; top: 73px; transform: none; opacity: .8; }
   .landing-purpose { padding: 76px 25px 45px; grid-template-columns: 1fr; gap: 28px; }
   .landing-pillars { padding: 0 25px 76px; grid-template-columns: 1fr; }
   .landing-pillar, .landing-pillar:last-child { min-height: 0; border: 0; border-top: 1px solid #d9e2db; padding: 26px 0; }

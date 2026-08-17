@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import calvaryEmblem from "../assets/calvary-point-assembly.jpg";
 
 const pillars = [
   {
@@ -35,11 +34,6 @@ export default function LandingPage() {
             <Link to="/give" className="landing-button landing-button-primary">Become a Builder <span>→</span></Link>
             <a href="#vision" className="landing-button landing-button-quiet">Our vision <span>↓</span></a>
           </div>
-        </div>
-        <div className="hero-emblem-wrap" aria-label="Calvary Point Assembly International — The Zeal House">
-          <div className="hero-emblem-glow" />
-          <img className="hero-emblem" src={calvaryEmblem} alt="Calvary Point Assembly International — The Zeal House" />
-          <span className="hero-emblem-caption">The Zeal House</span>
         </div>
         <div className="hero-scripture">
           <span className="scripture-mark">“</span>

@@ -8,14 +8,14 @@ const links = [
   { to: "/register", label: "Join Us" },
 ];
 
-import logoUrl from "../assets/logo.svg";
+import logoUrl from "../assets/calvary-point-assembly.jpg";
 
 export default function Navbar() {
   return (
     <header className="navbar">
       <div className="navbar-inner">
         <NavLink to="/" className="navbar-brand">
-          <img src={logoUrl} alt="Nehemiah Building" className="navbar-logo" />
+          <img src={logoUrl} alt="Calvary Point Assembly International" className="navbar-logo" />
           NEHEMIAH BUILDING
         </NavLink>
         <nav className="navbar-links">
