@@ -24,6 +24,12 @@ app:
     jwt-secret: ${APP_JWT_SECRET:dev-only-change-me-32-bytes-minimum-secret-key}
     jwt-expiration-minutes: ${APP_JWT_EXPIRATION_MINUTES:43200}
     super-admin-phone: ${APP_SUPER_ADMIN_PHONE:+2349078902655}
+  sms:
+    provider: termii
+    termii:
+      base-url: https://api.ng.termii.com
+      api-key: tlv_3Jq8_TjzCNmzwZCZfohhfER3xKXfcSJT14VZi-__ZGA
+      sender-id: Termii
 
 logging:
   level:

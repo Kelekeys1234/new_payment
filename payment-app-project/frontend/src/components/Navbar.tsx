@@ -45,7 +45,7 @@ export default function Navbar() {
             </button>
           ) : (
             <NavLink to="/login" className={({ isActive }) => "navbar-link" + (isActive ? " active" : "")}>
-              Login
+              Payment Wallet
             </NavLink>
           )}
         </nav>
