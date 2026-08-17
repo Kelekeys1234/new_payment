@@ -5,6 +5,7 @@ import PaymentHistoryPage from "./pages/PaymentHistoryPage";
 import UsersPage from "./pages/UsersPage";
 import UserDetailsPage from "./pages/UserDetailsPage";
 import UserRegistrationPage from "./pages/UserRegistrationPage";
+import LandingPage from "./pages/LandingPage";
 
 export default function App() {
   return (
@@ -13,7 +14,8 @@ export default function App() {
         <Navbar />
         <main className="app-main">
           <Routes>
-            <Route path="/" element={<PaymentPage />} />
+            <Route path="/" element={<LandingPage />} />
+            <Route path="/give" element={<PaymentPage />} />
             <Route path="/payments" element={<PaymentHistoryPage />} />
             <Route path="/users" element={<UsersPage />} />
             <Route path="/users/:id" element={<UserDetailsPage />} />

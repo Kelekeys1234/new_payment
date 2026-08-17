@@ -1,10 +1,11 @@
 import { NavLink } from "react-router-dom";
 
 const links = [
-  { to: "/", label: "New Payment", end: true },
+  { to: "/", label: "Home", end: true },
+  { to: "/give", label: "Give" },
   { to: "/payments", label: "Payment History" },
   { to: "/users", label: "Users" },
-  { to: "/register", label: "Register User" },
+  { to: "/register", label: "Join Us" },
 ];
 
 import logoUrl from "../assets/logo.svg";
