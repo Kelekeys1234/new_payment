@@ -91,7 +91,7 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
   // letting them create a bare-bones record inline (that inline path is reserved for visitors).
   useEffect(() => {
     if (isVisitor === false && lookupStatus === "not-found") {
-      alert("This phone number was not found in Nehemiah Building membership records. Please register first.");
+      alert("This phone number was not found in Nehemiah Builders Partners records. Please register first.");
       navigate("/register", { state: { phoneNumber: phoneNumber.trim() } });
     }
   }, [isVisitor, lookupStatus, phoneNumber, navigate]);
@@ -221,7 +221,7 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
       {/* Visitor */}
       <div className="field">
         <label className="field-label">
-          Are you a visitor?<span className="field-required">*</span>
+          Are you a partner?<span className="field-required">*</span>
         </label>
         <div className="radio-group horizontal">
           <label className={"radio-option" + (isVisitor === true ? " checked" : "")}>
@@ -231,7 +231,7 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
               checked={isVisitor === true}
               onChange={() => setIsVisitor(true)}
             />
-            <span className="radio-option-label">Yes, I am a visitor</span>
+            <span className="radio-option-label">Yes, I am a partner</span>
           </label>
           <label className={"radio-option" + (isVisitor === false ? " checked" : "")}>
             <input
@@ -240,7 +240,7 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
               checked={isVisitor === false}
               onChange={() => setIsVisitor(false)}
             />
-            <span className="radio-option-label">No, I am not a visitor</span>
+            <span className="radio-option-label">No, I am not a partner</span>
           </label>
         </div>
         {errors.isVisitor && <div className="field-error">{errors.isVisitor}</div>}

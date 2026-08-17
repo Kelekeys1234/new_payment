@@ -937,6 +937,7 @@ table.data-table {
 
 .landing-hero-content, .hero-scripture { position: relative; z-index: 1; }
 .landing-hero-content { max-width: 680px; }
+.landing-hero-image { position: absolute; z-index: 1; right: 9%; top: 18%; width: min(30vw, 340px); height: min(30vw, 340px); object-fit: cover; border-radius: 50% 50% 4px 50%; border: 8px solid rgba(236,185,79,.8); box-shadow: 22px 24px 0 rgba(255,255,255,.1), 0 20px 50px rgba(0,0,0,.28); }
 .landing-kicker { margin: 0 0 19px; font-size: 11px; letter-spacing: .16em; text-transform: uppercase; font-weight: 700; }
 .landing-kicker span { display: inline-block; width: 25px; height: 1px; margin: 0 9px 4px 0; background: currentColor; }
 .landing-hero h1, .landing-cta h2 { font-size: clamp(54px, 8vw, 106px); line-height: .91; letter-spacing: -.065em; }
@@ -987,6 +988,7 @@ table.data-table {
 @media (max-width: 700px) {
   .landing-hero { min-height: 590px; padding-top: 62px; padding-bottom: 170px; }
   .hero-scripture { right: 28px; bottom: 35px; max-width: 225px; }
+  .landing-hero-image { width: 130px; height: 130px; right: 20px; top: 40px; border-width: 4px; opacity: .75; }
   .landing-purpose { padding: 76px 25px 45px; grid-template-columns: 1fr; gap: 28px; }
   .landing-pillars { padding: 0 25px 76px; grid-template-columns: 1fr; }
   .landing-pillar, .landing-pillar:last-child { min-height: 0; border: 0; border-top: 1px solid #d9e2db; padding: 26px 0; }

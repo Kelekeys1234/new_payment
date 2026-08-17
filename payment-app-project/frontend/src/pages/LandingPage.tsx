@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import partnersImage from "../assets/landing-partners.jpeg";
 
 const pillars = [
   {
@@ -35,6 +36,7 @@ export default function LandingPage() {
             <a href="#vision" className="landing-button landing-button-quiet">Our vision <span>↓</span></a>
           </div>
         </div>
+        <img className="landing-hero-image" src={partnersImage} alt="Nehemiah Builders Partners" />
         <div className="hero-scripture">
           <span className="scripture-mark">“</span>
           <p>Freely ye have received, freely give.</p>
@@ -52,7 +54,7 @@ export default function LandingPage() {
           <h2>Called to build<br />something that lasts.</h2>
         </div>
         <p className="purpose-copy">
-          The Nehemiah Building is a shared act of faith. There is a place for every willing heart, every prayer, and every gift.
+          Nehemiah Builders Partners is a shared act of faith. There is a place for every willing heart, every prayer, and every gift.
         </p>
       </section>
 
@@ -75,7 +77,7 @@ export default function LandingPage() {
       </section>
 
       <footer className="landing-footer">
-        <div className="footer-brand">NEHEMIAH <span>BUILDING</span></div>
+        <div className="footer-brand">NEHEMIAH BUILDERS <span>PARTNERS</span></div>
         <div className="footer-contact">
           <a href="https://www.calvararian.org" target="_blank" rel="noreferrer">www.calvararian.org</a>
           <a href="tel:09090006142">09090006142</a>
