@@ -98,7 +98,7 @@ export default function UserRegistrationPage() {
       <>
         <div className="page-header">
           <p className="page-eyebrow">Registration</p>
-          <h1 className="page-title">NEHEMIAH BUILDERS PARTNERS REGISTRATION</h1>
+          <h1 className="page-title">NEHEMIAH BUILDERS PARTNERS INTERNATIONAL REGISTRATION</h1>
         </div>
         <div className="receipt">
           <div className="receipt-head">
@@ -124,7 +124,7 @@ export default function UserRegistrationPage() {
     <>
       <div className="page-header">
         <p className="page-eyebrow">Registration</p>
-        <h1 className="page-title">NEHEMIAH BUILDERS PARTNERS REGISTRATION</h1>
+        <h1 className="page-title">NEHEMIAH BUILDERS PARTNERS INTERNATIONAL REGISTRATION</h1>
         <p className="page-subtitle">
           {redirectState?.phoneNumber
             ? "We couldn't find this phone number in our membership records. Please complete registration below."

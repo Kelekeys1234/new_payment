@@ -22,7 +22,6 @@ interface FormErrors {
   phoneNumber?: string;
   name?: string;
   paymentType?: string;
-  paymentPurpose?: string;
   paymentFrequency?: string;
   amount?: string;
   currency?: string;
@@ -41,7 +40,7 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
   const [newUserName, setNewUserName] = useState("");
 
   const [paymentType, setPaymentType] = useState<PaymentType | "">("");
-  const [paymentPurpose, setPaymentPurpose] = useState<PaymentPurpose | "">("");
+  const paymentPurpose: PaymentPurpose = "DONATION";
   const [paymentFrequency, setPaymentFrequency] = useState<import("../types/Payment").PaymentFrequency | "">("");
   const [amount, setAmount] = useState("");
   const [currency, setCurrency] = useState<CurrencyCode>("NGN");
@@ -125,9 +124,6 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
     if (!paymentType) {
       next.paymentType = "Select a payment type.";
     }
-    if (!paymentPurpose) {
-      next.paymentPurpose = "Select a payment purpose.";
-    }
     if (!paymentFrequency) {
       next.paymentFrequency = "Select a payment frequency.";
     }
@@ -165,7 +161,7 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
         fullName: newUserName.trim() || undefined,
         isVisitor: Boolean(isVisitor),
         paymentType: paymentType as PaymentType,
-        paymentPurpose: paymentPurpose as PaymentPurpose,
+        paymentPurpose,
         paymentFrequency: paymentFrequency as import("../types/Payment").PaymentFrequency,
         amount: amountNumberSafe(amount),
         currency,
@@ -187,7 +183,6 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
     setFoundUser(null);
     setNewUserName("");
     setPaymentType("");
-    setPaymentPurpose("");
     setAmount("");
     setCurrency("NGN");
     setReceipt(null);
@@ -334,35 +329,6 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
           </select>
         </div>
         {errors.paymentType && <div className="field-error">{errors.paymentType}</div>}
-      </div>
-
-
-      {/* Payment purpose */}
-      <div className="field">
-        <label className="field-label">
-          Payment Purpose<span className="field-required">*</span>
-        </label>
-        <div className="radio-group horizontal">
-          <label className={"radio-option" + (paymentPurpose === "LOAN" ? " checked" : "")}>
-            <input
-              type="radio"
-              name="paymentPurpose"
-              checked={paymentPurpose === "LOAN"}
-              onChange={() => setPaymentPurpose("LOAN")}
-            />
-            <span className="radio-option-label">Loan</span>
-          </label>
-          <label className={"radio-option" + (paymentPurpose === "DONATION" ? " checked" : "")}>
-            <input
-              type="radio"
-              name="paymentPurpose"
-              checked={paymentPurpose === "DONATION"}
-              onChange={() => setPaymentPurpose("DONATION")}
-            />
-            <span className="radio-option-label">Donation</span>
-          </label>
-        </div>
-        {errors.paymentPurpose && <div className="field-error">{errors.paymentPurpose}</div>}
       </div>
 
       {/* Payment frequency */}

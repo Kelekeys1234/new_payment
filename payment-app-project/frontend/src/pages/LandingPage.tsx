@@ -31,7 +31,7 @@ export default function LandingPage() {
         <div className="landing-orb landing-orb-one" />
         <div className="landing-orb landing-orb-two" />
         <div className="landing-hero-content">
-          <p className="landing-kicker"><span /> Calvary Ararian</p>
+          <p className="landing-kicker"><span /> Calvararian</p>
           <h1>We build<br /><em>for His glory.</em></h1>
           <p className="landing-intro">
             You are warmly welcomed to become a Nehemiah Builder. Together, we build a home for the vision God has given us.
@@ -81,7 +81,7 @@ export default function LandingPage() {
       </section>
 
       <footer className="landing-footer">
-        <div className="footer-brand">NEHEMIAH BUILDERS <span>PARTNERS</span></div>
+        <div className="footer-brand">NEHEMIAH BUILDERS <span>PARTNERS INTERNATIONAL</span></div>
         <div className="footer-contact">
           <a href="https://www.calvararian.org" target="_blank" rel="noreferrer">www.calvararian.org</a>
           <a href="tel:09090006142">09090006142</a>

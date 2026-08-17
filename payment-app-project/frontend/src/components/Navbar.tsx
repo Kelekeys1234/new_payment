@@ -26,7 +26,7 @@ export default function Navbar() {
       <div className="navbar-inner">
         <NavLink to="/" className="navbar-brand">
           <img src={logoUrl} alt="Calvary Point Assembly International" className="navbar-logo" />
-          NEHEMIAH BUILDERS PARTNERS
+          NEHEMIAH BUILDERS PARTNERS INTERNATIONAL
         </NavLink>
         <nav className="navbar-links">
           {links.map((link) => (
