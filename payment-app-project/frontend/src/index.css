@@ -701,6 +701,16 @@ table.data-table {
   color: #a5590a;
 }
 
+.pill.pill-confirmed {
+  background: var(--success-soft);
+  color: #1e7a51;
+}
+
+.pill.pill-not-confirmed {
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
 .table-actions {
   display: flex;
   flex-wrap: wrap;

@@ -36,4 +36,9 @@ public class Payment {
     private String receiptFileName;
     private String createdBy;
     private LocalDateTime created;
+
+    private PaymentConfirmationStatus confirmationStatus;
+
+    // Unguessable token used in the admin's confirm/reject email links - never exposed via the API.
+    private String confirmationToken;
 }

@@ -7,12 +7,15 @@ import com.example.payment.dto.UserPaymentSummary;
 import com.example.payment.dto.UserResponse;
 import com.example.payment.exception.ResourceNotFoundException;
 import com.example.payment.model.Payment;
+import com.example.payment.model.PaymentConfirmationStatus;
 import com.example.payment.model.PaymentPurpose;
 import com.example.payment.model.User;
 import com.example.payment.repository.PaymentRepository;
 import com.example.payment.repository.UserRepository;
 import com.example.payment.util.PhoneUtils;
 import com.example.payment.util.SequenceGeneratorService;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -20,9 +23,11 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class PaymentService {
 
@@ -35,15 +40,23 @@ public class PaymentService {
     private final UserService userService;
     private final SequenceGeneratorService sequenceGeneratorService;
     private final ReceiptVerificationService receiptVerificationService;
+    private final EmailService emailService;
+
+    @Value("${app.public-base-url}")
+    private String publicBaseUrl;
+
+    @Value("${app.giving.admin-email}")
+    private String confirmationAdminEmail;
 
     public PaymentService(PaymentRepository paymentRepository, UserRepository userRepository,
                            UserService userService, SequenceGeneratorService sequenceGeneratorService,
-                           ReceiptVerificationService receiptVerificationService) {
+                           ReceiptVerificationService receiptVerificationService, EmailService emailService) {
         this.paymentRepository = paymentRepository;
         this.userRepository = userRepository;
         this.userService = userService;
         this.sequenceGeneratorService = sequenceGeneratorService;
         this.receiptVerificationService = receiptVerificationService;
+        this.emailService = emailService;
     }
 
     public List<PaymentResponse> getAllPayments() {
@@ -128,14 +141,56 @@ public class PaymentService {
                 .currency(request.getCurrency())
                 .receiptFileName(receiptFileName)
                 .createdBy(request.getCreatedBy())
-                .created(LocalDateTime.now());
+                .created(LocalDateTime.now())
+                .confirmationStatus(PaymentConfirmationStatus.PENDING)
+                .confirmationToken(UUID.randomUUID().toString());
 
         if (user != null) builder.userId(user.getId());
 
         Payment payment = builder.build();
 
         Payment saved = paymentRepository.save(payment);
+        notifyAdminForConfirmation(saved, user);
         return toResponse(saved, user);
+    }
+
+    // A failed email must never undo an already-recorded payment - the admin can still see
+    // and confirm it manually from the ledger even if this notification doesn't land.
+    private void notifyAdminForConfirmation(Payment payment, User user) {
+        try {
+            String payerName = user != null ? user.getFullName() : payment.getCreatedBy();
+            String confirmUrl = publicBaseUrl + "/api/payments/confirm/" + payment.getConfirmationToken();
+            String rejectUrl = publicBaseUrl + "/api/payments/reject/" + payment.getConfirmationToken();
+            emailService.sendPaymentConfirmationRequest(confirmationAdminEmail, payerName, payment.getAmount(),
+                    payment.getCurrency().name(), payment.getCreated(), confirmUrl, rejectUrl);
+        } catch (Exception e) {
+            log.error("Failed to send payment confirmation email for payment {}: {}", payment.getId(), e.getMessage(), e);
+        }
+    }
+
+    public PaymentResponse confirmByToken(String token) {
+        Payment payment = findByConfirmationToken(token);
+        if (payment.getConfirmationStatus() == PaymentConfirmationStatus.PENDING) {
+            payment.setConfirmationStatus(PaymentConfirmationStatus.CONFIRMED);
+            paymentRepository.save(payment);
+        }
+        User user = payment.getUserId() != null ? userRepository.findById(payment.getUserId()).orElse(null) : null;
+        return toResponse(payment, user);
+    }
+
+    public PaymentResponse rejectByToken(String token) {
+        Payment payment = findByConfirmationToken(token);
+        if (payment.getConfirmationStatus() == PaymentConfirmationStatus.PENDING) {
+            payment.setConfirmationStatus(PaymentConfirmationStatus.NOT_CONFIRMED);
+            paymentRepository.save(payment);
+        }
+        User user = payment.getUserId() != null ? userRepository.findById(payment.getUserId()).orElse(null) : null;
+        return toResponse(payment, user);
+    }
+
+    private Payment findByConfirmationToken(String token) {
+        return paymentRepository.findByConfirmationToken(token)
+                .orElseThrow(() -> new ResourceNotFoundException("No payment found for this confirmation link"));
     }
 
     public PaymentResponse updatePayment(String id, UpdatePaymentRequest request) {
@@ -231,6 +286,7 @@ public class PaymentService {
                 .receiptFileName(payment.getReceiptFileName())
                 .createdBy(payment.getCreatedBy())
                 .created(payment.getCreated())
+                .confirmationStatus(payment.getConfirmationStatus())
                 .build();
     }
 }

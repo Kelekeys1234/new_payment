@@ -1,6 +1,7 @@
 package com.example.payment.dto;
 
 import com.example.payment.model.Currency;
+import com.example.payment.model.PaymentConfirmationStatus;
 import com.example.payment.model.PaymentPurpose;
 import com.example.payment.model.PaymentType;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -35,4 +36,5 @@ public class PaymentResponse {
     private String receiptFileName;
     private String createdBy;
     private LocalDateTime created;
+    private PaymentConfirmationStatus confirmationStatus;
 }

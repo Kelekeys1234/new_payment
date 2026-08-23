@@ -58,10 +58,10 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/users/search").permitAll()
 
-                        // Giving-intent flow: anonymous giver creates/polls it, admin confirms/rejects
-                        // by clicking a plain link from their email client (no session either way).
-                        .requestMatchers(HttpMethod.POST, "/api/giving-intents").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/giving-intents/**").permitAll()
+                        // Payment confirmation: admin confirms/rejects a submitted payment by clicking
+                        // a plain link from their email client (no session), must stay open. Placed
+                        // before the ADMIN-only "/api/payments/**" rule below so it isn't shadowed.
+                        .requestMatchers(HttpMethod.GET, "/api/payments/confirm/**", "/api/payments/reject/**").permitAll()
 
                         // Any authenticated user.
                         .requestMatchers(HttpMethod.GET, "/api/auth/me").authenticated()

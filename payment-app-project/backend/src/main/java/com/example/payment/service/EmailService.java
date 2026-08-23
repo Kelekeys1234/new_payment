@@ -1,6 +1,10 @@
 package com.example.payment.service;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+
 public interface EmailService {
 
-    void sendGivingConfirmationRequest(String toEmail, String confirmUrl, String rejectUrl);
+    void sendPaymentConfirmationRequest(String toEmail, String payerName, BigDecimal amount, String currency,
+                                         LocalDateTime submittedAt, String confirmUrl, String rejectUrl);
 }

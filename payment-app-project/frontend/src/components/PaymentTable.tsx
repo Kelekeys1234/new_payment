@@ -1,5 +1,17 @@
 import { Link } from "react-router-dom";
-import { CURRENCY_SYMBOLS, PAYMENT_TYPE_LABELS, PAYMENT_FREQUENCY_LABELS, type Payment } from "../types/Payment";
+import {
+  CURRENCY_SYMBOLS,
+  PAYMENT_TYPE_LABELS,
+  PAYMENT_FREQUENCY_LABELS,
+  PAYMENT_CONFIRMATION_LABELS,
+  type Payment,
+} from "../types/Payment";
+
+const CONFIRMATION_PILL_CLASS: Record<Payment["confirmationStatus"], string> = {
+  CONFIRMED: "pill-confirmed",
+  NOT_CONFIRMED: "pill-not-confirmed",
+  PENDING: "",
+};
 
 export default function PaymentTable({
   payments,
@@ -37,6 +49,7 @@ export default function PaymentTable({
           <th>Amount</th>
           <th>Created By</th>
           <th>Created</th>
+          <th>Confirmation</th>
           {showActions && <th>Actions</th>}
           </tr>
         </thead>
@@ -80,6 +93,11 @@ export default function PaymentTable({
                   month: "short",
                   year: "numeric",
                 })}
+              </td>
+              <td>
+                <span className={"pill " + CONFIRMATION_PILL_CLASS[p.confirmationStatus]}>
+                  {PAYMENT_CONFIRMATION_LABELS[p.confirmationStatus]}
+                </span>
               </td>
               {showActions && (
                 <td>

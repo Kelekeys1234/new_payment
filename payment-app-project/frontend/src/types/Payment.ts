@@ -2,6 +2,7 @@ export type PaymentType = "BANK_TRANSFER" | "CASH" | "CARD" | "MOBILE_MONEY" | "
 export type PaymentPurpose = "LOAN" | "DONATION";
 export type PaymentFrequency = "ONE_TIME" | "DAILY" | "WEEKLY" | "MONTHLY";
 export type CurrencyCode = "NGN" | "USD" | "EUR" | "GBP";
+export type PaymentConfirmationStatus = "PENDING" | "CONFIRMED" | "NOT_CONFIRMED";
 
 export interface Payment {
   id: string;
@@ -17,6 +18,7 @@ export interface Payment {
   receiptFileName?: string;
   createdBy: string;
   created: string; // ISO datetime
+  confirmationStatus: PaymentConfirmationStatus;
 }
 
 export interface CreatePaymentRequest {
@@ -40,6 +42,12 @@ export interface UpdatePaymentRequest {
   amount: number;
   currency: CurrencyCode;
 }
+
+export const PAYMENT_CONFIRMATION_LABELS: Record<PaymentConfirmationStatus, string> = {
+  PENDING: "Pending",
+  CONFIRMED: "Confirmed",
+  NOT_CONFIRMED: "Not confirmed",
+};
 
 export const PAYMENT_TYPE_LABELS: Record<PaymentType, string> = {
   BANK_TRANSFER: "Bank Transfer",

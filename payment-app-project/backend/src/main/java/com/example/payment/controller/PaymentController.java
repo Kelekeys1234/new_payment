@@ -8,6 +8,7 @@ import com.example.payment.service.PaymentService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -74,5 +75,31 @@ public class PaymentController {
     public ResponseEntity<Void> deletePayment(@PathVariable String id) {
         paymentService.deletePayment(id);
         return ResponseEntity.noContent().build();
+    }
+
+    // Opened directly from the admin's email client, so these render a plain HTML page
+    // rather than JSON.
+
+    @GetMapping(value = "/confirm/{token}", produces = MediaType.TEXT_HTML_VALUE)
+    public ResponseEntity<String> confirm(@PathVariable String token) {
+        paymentService.confirmByToken(token);
+        return ResponseEntity.ok(page("Confirmed", "This payment has been marked confirmed."));
+    }
+
+    @GetMapping(value = "/reject/{token}", produces = MediaType.TEXT_HTML_VALUE)
+    public ResponseEntity<String> reject(@PathVariable String token) {
+        paymentService.rejectByToken(token);
+        return ResponseEntity.ok(page("Marked as not confirmed", "This payment has been marked not confirmed."));
+    }
+
+    private String page(String heading, String message) {
+        return """
+                <!doctype html>
+                <html><head><meta charset="utf-8"><title>%s</title></head>
+                <body style="font-family: Arial, sans-serif; text-align: center; padding: 60px 20px;">
+                  <h2>%s</h2>
+                  <p>%s</p>
+                </body></html>
+                """.formatted(heading, heading, message);
     }
 }

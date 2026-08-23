@@ -1,6 +1,6 @@
 package com.example.payment.model;
 
-public enum GivingIntentStatus {
+public enum PaymentConfirmationStatus {
     PENDING,
     CONFIRMED,
     NOT_CONFIRMED
