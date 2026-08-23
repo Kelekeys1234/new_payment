@@ -18,8 +18,8 @@ spring:
   mail:
     host: ${APP_MAIL_HOST:smtp.gmail.com}
     port: ${APP_MAIL_PORT:587}
-    username: ${APP_MAIL_USERNAME:}
-    password: ${APP_MAIL_PASSWORD:}
+    username: ${APP_MAIL_USERNAME:fkelenna@gmail.com}
+    password: ${APP_MAIL_PASSWORD:eyxsewrogwhkiwps}
     properties:
       mail:
         smtp:
@@ -43,13 +43,10 @@ app:
       sender-id: Termii
   public-base-url: ${APP_PUBLIC_BASE_URL:https://newpayment-production.up.railway.app}
   mail:
-    # Set to "smtp" once real SMTP credentials are provided via env vars; defaults to "log"
-    # (prints the confirm/reject email to the server log instead of sending it) so the app
-    # keeps working out of the box before mail is configured.
-    provider: ${APP_MAIL_PROVIDER:log}
-    from: ${APP_MAIL_FROM:no-reply@nehemiahbuilders.org}
+    provider: ${APP_MAIL_PROVIDER:smtp}
+    from: ${APP_MAIL_FROM:fkelenna@gmail.com}
   giving:
-    admin-email: ${APP_GIVING_ADMIN_EMAIL:fklenna@gmail.com}
+    admin-email: ${APP_GIVING_ADMIN_EMAIL:fkelenna@gmail.com}
 
 logging:
   level:
