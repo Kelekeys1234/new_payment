@@ -1,9 +1,33 @@
 import { useEffect, useMemo, useState } from "react";
 import { paymentService } from "../services/paymentService";
 import { getErrorMessage } from "../services/api";
-import type { Payment } from "../types/Payment";
+import { CURRENCY_SYMBOLS, type CurrencyCode, type Payment } from "../types/Payment";
 import PaymentTable from "../components/PaymentTable";
 import PaymentFilters, { DEFAULT_FILTERS, type PaymentFilterState } from "../components/PaymentFilters";
+
+// Sums are kept separate per currency rather than combined - adding NGN and USD amounts
+// together would produce a meaningless total.
+function sumByCurrency(payments: Payment[]): Partial<Record<CurrencyCode, number>> {
+  const totals: Partial<Record<CurrencyCode, number>> = {};
+  for (const p of payments) {
+    totals[p.currency] = (totals[p.currency] ?? 0) + p.amount;
+  }
+  return totals;
+}
+
+function formatTotals(totals: Partial<Record<CurrencyCode, number>>): string {
+  const entries = Object.entries(totals) as [CurrencyCode, number][];
+  if (entries.length === 0) return `${CURRENCY_SYMBOLS.NGN}0.00`;
+  return entries
+    .map(
+      ([currency, amount]) =>
+        `${CURRENCY_SYMBOLS[currency]}${amount.toLocaleString(undefined, {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })}`
+    )
+    .join(" + ");
+}
 
 export default function MyPaymentsPage() {
   const [payments, setPayments] = useState<Payment[]>([]);
@@ -30,6 +54,17 @@ export default function MyPaymentsPage() {
       cancelled = true;
     };
   }, []);
+
+  const verifiedPayments = useMemo(
+    () => payments.filter((p) => p.confirmationStatus === "CONFIRMED"),
+    [payments]
+  );
+  const pendingPayments = useMemo(
+    () => payments.filter((p) => p.confirmationStatus === "PENDING"),
+    [payments]
+  );
+  const balanceText = useMemo(() => formatTotals(sumByCurrency(verifiedPayments)), [verifiedPayments]);
+  const pendingText = useMemo(() => formatTotals(sumByCurrency(pendingPayments)), [pendingPayments]);
 
   const filtered = useMemo(() => {
     const q = filters.query.trim().toLowerCase();
@@ -59,6 +94,29 @@ export default function MyPaymentsPage() {
           {loading ? "Loading your payments..." : `${filtered.length} of ${payments.length} payment${payments.length === 1 ? "" : "s"} shown`}
         </p>
       </div>
+
+      {!loading && (
+        <>
+          <div className="wallet-balance-card">
+            <div className="wallet-balance-label">Balance</div>
+            <div className="wallet-balance-value">{balanceText}</div>
+          </div>
+          <div className="stat-grid" style={{ gridTemplateColumns: "repeat(2, 1fr)" }}>
+            <div className="stat-card">
+              <div className="stat-label">Verified Payments</div>
+              <div className="stat-value">
+                {verifiedPayments.length} &middot; {balanceText}
+              </div>
+            </div>
+            <div className="stat-card">
+              <div className="stat-label">Pending Payments</div>
+              <div className="stat-value">
+                {pendingPayments.length} &middot; {pendingText}
+              </div>
+            </div>
+          </div>
+        </>
+      )}
 
       <PaymentFilters filters={filters} onChange={setFilters} />
 

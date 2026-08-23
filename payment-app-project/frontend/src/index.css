@@ -819,6 +819,31 @@ table.data-table {
   }
 }
 
+/* Wallet balance hero card */
+.wallet-balance-card {
+  background: linear-gradient(135deg, var(--primary), var(--primary-hover));
+  border-radius: var(--radius-lg);
+  padding: 24px 28px;
+  color: white;
+  box-shadow: var(--shadow-pop);
+  margin-bottom: 16px;
+}
+
+.wallet-balance-label {
+  font-size: 13px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.85;
+}
+
+.wallet-balance-value {
+  font-family: var(--font-mono);
+  font-size: 32px;
+  font-weight: 700;
+  margin-top: 8px;
+}
+
 /* Summary stat cards */
 .stat-grid {
   display: grid;
