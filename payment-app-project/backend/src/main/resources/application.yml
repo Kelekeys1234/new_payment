@@ -15,6 +15,17 @@ spring:
     multipart:
       max-file-size: 8MB
       max-request-size: 9MB
+  mail:
+    host: ${APP_MAIL_HOST:smtp.gmail.com}
+    port: ${APP_MAIL_PORT:587}
+    username: ${APP_MAIL_USERNAME:}
+    password: ${APP_MAIL_PASSWORD:}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 
 app:
   receipts:
@@ -30,6 +41,15 @@ app:
       base-url: https://api.ng.termii.com
       api-key: tlv_3Jq8_TjzCNmzwZCZfohhfER3xKXfcSJT14VZi-__ZGA
       sender-id: Termii
+  public-base-url: ${APP_PUBLIC_BASE_URL:https://newpayment-production.up.railway.app}
+  mail:
+    # Set to "smtp" once real SMTP credentials are provided via env vars; defaults to "log"
+    # (prints the confirm/reject email to the server log instead of sending it) so the app
+    # keeps working out of the box before mail is configured.
+    provider: ${APP_MAIL_PROVIDER:log}
+    from: ${APP_MAIL_FROM:no-reply@nehemiahbuilders.org}
+  giving:
+    admin-email: ${APP_GIVING_ADMIN_EMAIL:fklenna@gmail.com}
 
 logging:
   level:

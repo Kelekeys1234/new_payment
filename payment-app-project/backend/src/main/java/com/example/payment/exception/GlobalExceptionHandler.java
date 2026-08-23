@@ -57,6 +57,13 @@ public class GlobalExceptionHandler {
                 "Could not send the verification code. Please try again shortly.", null);
     }
 
+    @ExceptionHandler(EmailDeliveryException.class)
+    public ResponseEntity<ErrorResponse> handleEmailDeliveryFailure(EmailDeliveryException ex) {
+        log.error("Email delivery failed: {}", ex.getMessage(), ex);
+        return build(HttpStatus.BAD_GATEWAY,
+                "Could not send the confirmation email. Please try again shortly.", null);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidation(MethodArgumentNotValidException ex) {
         List<String> details = ex.getBindingResult().getFieldErrors().stream()
