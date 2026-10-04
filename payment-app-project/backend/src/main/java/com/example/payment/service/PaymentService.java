@@ -13,8 +13,6 @@ import com.example.payment.model.User;
 import com.example.payment.repository.PaymentRepository;
 import com.example.payment.repository.UserRepository;
 import com.example.payment.util.SequenceGeneratorService;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,7 +24,6 @@ import java.util.UUID;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-@Slf4j
 @Service
 public class PaymentService {
 
@@ -39,23 +36,18 @@ public class PaymentService {
     private final UserService userService;
     private final SequenceGeneratorService sequenceGeneratorService;
     private final ReceiptVerificationService receiptVerificationService;
-    private final EmailService emailService;
-
-    @Value("${app.public-base-url}")
-    private String publicBaseUrl;
-
-    @Value("${app.giving.admin-email}")
-    private String confirmationAdminEmail;
+    private final PaymentNotificationService paymentNotificationService;
 
     public PaymentService(PaymentRepository paymentRepository, UserRepository userRepository,
                            UserService userService, SequenceGeneratorService sequenceGeneratorService,
-                           ReceiptVerificationService receiptVerificationService, EmailService emailService) {
+                           ReceiptVerificationService receiptVerificationService,
+                           PaymentNotificationService paymentNotificationService) {
         this.paymentRepository = paymentRepository;
         this.userRepository = userRepository;
         this.userService = userService;
         this.sequenceGeneratorService = sequenceGeneratorService;
         this.receiptVerificationService = receiptVerificationService;
-        this.emailService = emailService;
+        this.paymentNotificationService = paymentNotificationService;
     }
 
     public List<PaymentResponse> getAllPayments() {
@@ -149,22 +141,10 @@ public class PaymentService {
         Payment payment = builder.build();
 
         Payment saved = paymentRepository.save(payment);
-        notifyAdminForConfirmation(saved, user);
+        String payerName = user != null ? user.getFullName() : saved.getCreatedBy();
+        paymentNotificationService.notifyAdmin(saved.getId(), saved.getConfirmationToken(), payerName,
+                saved.getAmount(), saved.getCurrency().name(), saved.getCreated());
         return toResponse(saved, user);
-    }
-
-    // A failed email must never undo an already-recorded payment - the admin can still see
-    // and confirm it manually from the ledger even if this notification doesn't land.
-    private void notifyAdminForConfirmation(Payment payment, User user) {
-        try {
-            String payerName = user != null ? user.getFullName() : payment.getCreatedBy();
-            String confirmUrl = publicBaseUrl + "/api/payments/confirm/" + payment.getConfirmationToken();
-            String rejectUrl = publicBaseUrl + "/api/payments/reject/" + payment.getConfirmationToken();
-            emailService.sendPaymentConfirmationRequest(confirmationAdminEmail, payerName, payment.getAmount(),
-                    payment.getCurrency().name(), payment.getCreated(), confirmUrl, rejectUrl);
-        } catch (Exception e) {
-            log.error("Failed to send payment confirmation email for payment {}: {}", payment.getId(), e.getMessage(), e);
-        }
     }
 
     public PaymentResponse confirmByToken(String token) {

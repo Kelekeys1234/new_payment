@@ -448,6 +448,9 @@ function PaymentReceipt({ payment, onNewPayment }: { payment: Payment; onNewPaym
         </h2>
       </div>
       <div className="receipt-perforation" />
+      <div className="user-status found" style={{ margin: "16px 20px 0" }} role="status">
+        Your payment is awaiting admin verification. Email notification is being sent in the background.
+      </div>
       <div className="receipt-body">
         <div className="receipt-row">
           <span className="receipt-row-label">Payment ID</span>
