@@ -84,14 +84,6 @@ public class AuthService {
             throw new AccountAlreadyActivatedException(
                     "This account already has a password set. Please log in instead.");
         }
-        if (user.getOtpCode() == null || user.getOtpExpiresAt() == null
-                || user.getOtpExpiresAt().isBefore(LocalDateTime.now())) {
-            throw new InvalidOtpException("This code has expired. Please request a new one.");
-        }
-        if (!user.getOtpCode().equals(request.getOtp())) {
-            throw new InvalidOtpException("Incorrect code. Please try again.");
-        }
-
         user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         user.setOtpCode(null);
         user.setOtpExpiresAt(null);

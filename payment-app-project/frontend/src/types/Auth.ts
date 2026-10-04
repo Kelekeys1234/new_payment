@@ -26,7 +26,6 @@ export interface RequestOtpRequest {
 
 export interface ActivateAccountRequest {
   phoneNumber: string;
-  otp: string;
   password: string;
 }
 

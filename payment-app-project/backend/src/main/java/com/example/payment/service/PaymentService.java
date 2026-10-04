@@ -111,7 +111,8 @@ public class PaymentService {
     }
 
     public PaymentResponse createPayment(CreatePaymentRequest request, MultipartFile receipt) {
-        String receiptFileName = receiptVerificationService.verifyAndStore(receipt, request.getAmount(), request.getCurrency());
+        String receiptFileName = receipt == null || receipt.isEmpty() ? null
+                : receiptVerificationService.verifyAndStore(receipt, request.getAmount(), request.getCurrency());
         User user = null;
         String phone = request.getPhoneNumber();
 

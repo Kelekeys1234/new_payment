@@ -136,11 +136,9 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
     if (!currency) {
       next.currency = "Select a currency.";
     }
-    if (!receipt) {
-      next.receipt = "Upload your transfer receipt screenshot.";
-    } else if (!receipt.type.startsWith("image/")) {
+    if (receipt && !receipt.type.startsWith("image/")) {
       next.receipt = "Receipt must be an image file.";
-    } else if (receipt.size > 8 * 1024 * 1024) {
+    } else if (receipt && receipt.size > 8 * 1024 * 1024) {
       next.receipt = "Receipt image must be 8 MB or smaller.";
     }
 
@@ -165,7 +163,7 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
         paymentFrequency: paymentFrequency as import("../types/Payment").PaymentFrequency,
         amount: amountNumberSafe(amount),
         currency,
-      }, receipt!);
+      }, receipt);
       setResult(payment);
       onSubmitted?.();
     } catch (error) {
@@ -400,7 +398,7 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
 
       <div className="field">
         <label className="field-label" htmlFor="receipt">
-          Transfer Receipt Screenshot<span className="field-required">*</span>
+          Transfer Receipt Screenshot <span className="field-hint">(optional)</span>
         </label>
         <input
           id="receipt"
@@ -409,7 +407,7 @@ export default function PaymentForm({ onSubmitted }: { onSubmitted?: () => void 
           accept="image/png,image/jpeg,image/webp"
           onChange={(e) => setReceipt(e.target.files?.[0] ?? null)}
         />
-        <div className="field-hint">Required. We securely compare the amount shown in this screenshot with the amount entered above.</div>
+        <div className="field-hint">Optional. If provided, we compare the amount shown with the amount entered above.</div>
         {receipt && <div className="receipt-file-name">✓ {receipt.name}</div>}
         {errors.receipt && <div className="field-error">{errors.receipt}</div>}
       </div>

@@ -60,7 +60,7 @@ public class PaymentController {
     @PostMapping(consumes = "multipart/form-data")
     public ResponseEntity<PaymentResponse> createPayment(
             @Valid @RequestPart("payment") CreatePaymentRequest request,
-            @RequestPart("receipt") MultipartFile receipt) {
+            @RequestPart(value = "receipt", required = false) MultipartFile receipt) {
         PaymentResponse created = paymentService.createPayment(request, receipt);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
