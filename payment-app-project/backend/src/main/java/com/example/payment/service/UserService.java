@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -45,10 +46,17 @@ public class UserService {
     }
 
     public UserResponse searchByPhone(String phoneNumber) {
-        User user = userRepository.findByPhoneNumber(normalizePhone(phoneNumber))
+        User user = findUserByPhoneNumber(phoneNumber)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "No user found with phone number " + phoneNumber));
         return toResponse(user);
+    }
+
+    Optional<User> findUserByPhoneNumber(String phoneNumber) {
+        return PhoneUtils.lookupVariants(phoneNumber).stream()
+                .map(userRepository::findByPhoneNumber)
+                .flatMap(Optional::stream)
+                .findFirst();
     }
 
     /**
@@ -58,7 +66,7 @@ public class UserService {
     public UserResponse createUser(CreateUserRequest request) {
         String normalizedPhone = normalizePhone(request.getPhoneNumber());
 
-        userRepository.findByPhoneNumber(normalizedPhone).ifPresent(existing -> {
+        findUserByPhoneNumber(normalizedPhone).ifPresent(existing -> {
             throw new DuplicateUserException(
                     "User with phone number " + request.getPhoneNumber() + " already exists");
         });
@@ -91,7 +99,7 @@ public class UserService {
 
         String normalizedPhone = normalizePhone(request.getPhoneNumber());
 
-        userRepository.findByPhoneNumber(normalizedPhone)
+        findUserByPhoneNumber(normalizedPhone)
                 .filter(existing -> !existing.getId().equals(id))
                 .ifPresent(existing -> {
                     throw new DuplicateUserException(
@@ -138,7 +146,7 @@ public class UserService {
      */
     User findOrCreateUser(String phoneNumber, String fullName, String createdBy) {
         String normalizedPhone = normalizePhone(phoneNumber);
-        return userRepository.findByPhoneNumber(normalizedPhone)
+        return findUserByPhoneNumber(normalizedPhone)
                 .orElseGet(() -> {
                     if (fullName == null || fullName.isBlank()) {
                         throw new IllegalArgumentException(

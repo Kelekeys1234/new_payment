@@ -12,7 +12,6 @@ import com.example.payment.model.PaymentPurpose;
 import com.example.payment.model.User;
 import com.example.payment.repository.PaymentRepository;
 import com.example.payment.repository.UserRepository;
-import com.example.payment.util.PhoneUtils;
 import com.example.payment.util.SequenceGeneratorService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -117,8 +116,7 @@ public class PaymentService {
         String phone = request.getPhoneNumber();
 
         if (phone != null && !phone.isBlank()) {
-            String normalized = PhoneUtils.normalize(phone);
-            user = userRepository.findByPhoneNumber(normalized).orElse(null);
+            user = userService.findUserByPhoneNumber(phone).orElse(null);
             if (user == null && request.getFullName() != null && !request.getFullName().isBlank()) {
                 // Create a lightweight user when fullName provided
                 user = userService.findOrCreateUser(phone, request.getFullName(), request.getCreatedBy());
