@@ -2,6 +2,7 @@ package com.example.payment.security;
 
 import com.example.payment.model.User;
 import com.example.payment.repository.UserRepository;
+import com.example.payment.util.PhoneUtils;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -62,7 +63,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     private void authenticate(User user) {
-        boolean superAdmin = superAdminPhone.equals(user.getPhoneNumber());
+        boolean superAdmin = PhoneUtils.lookupVariants(superAdminPhone)
+                .contains(PhoneUtils.normalize(user.getPhoneNumber()));
         boolean admin = superAdmin || Boolean.TRUE.equals(user.getAdmin());
 
         List<GrantedAuthority> authorities = new ArrayList<>();

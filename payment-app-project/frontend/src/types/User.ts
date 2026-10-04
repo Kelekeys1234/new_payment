@@ -21,7 +21,7 @@ export interface User {
 export interface CreateUserRequest {
   createdBy: string;
   fullName: string;
-  email: string;
+  email?: string;
   phoneNumber: string;
   address: string;
   memberType: MemberType;

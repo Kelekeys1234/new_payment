@@ -46,8 +46,7 @@ public class AuthService {
     }
 
     public AuthStatusResponse status(String phoneNumber) {
-        String normalized = PhoneUtils.normalize(phoneNumber);
-        return userRepository.findByPhoneNumber(normalized)
+        return findUser(phoneNumber)
                 .map(user -> AuthStatusResponse.builder()
                         .registered(true)
                         .activated(user.getPasswordHash() != null)
@@ -94,8 +93,7 @@ public class AuthService {
     }
 
     public AuthResponse login(LoginRequest request) {
-        String normalized = PhoneUtils.normalize(request.getPhoneNumber());
-        User user = userRepository.findByPhoneNumber(normalized).orElse(null);
+        User user = findUser(request.getPhoneNumber()).orElse(null);
         if (user == null || user.getPasswordHash() == null
                 || !passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
             throw new InvalidCredentialsException("Invalid phone number or password.");
@@ -117,10 +115,16 @@ public class AuthService {
     }
 
     private User findUserOrThrow(String phoneNumber) {
-        String normalized = PhoneUtils.normalize(phoneNumber);
-        return userRepository.findByPhoneNumber(normalized)
+        return findUser(phoneNumber)
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "No user found with phone number " + phoneNumber + ". Please register first."));
+    }
+
+    private java.util.Optional<User> findUser(String phoneNumber) {
+        return PhoneUtils.lookupVariants(phoneNumber).stream()
+                .map(userRepository::findByPhoneNumber)
+                .flatMap(java.util.Optional::stream)
+                .findFirst();
     }
 
     private AuthResponse issueToken(User user) {
@@ -132,7 +136,8 @@ public class AuthService {
     }
 
     private AuthUserResponse toAuthUserResponse(User user) {
-        boolean superAdmin = superAdminPhone.equals(user.getPhoneNumber());
+        boolean superAdmin = PhoneUtils.lookupVariants(superAdminPhone)
+                .contains(PhoneUtils.normalize(user.getPhoneNumber()));
         boolean admin = superAdmin || Boolean.TRUE.equals(user.getAdmin());
         return AuthUserResponse.builder()
                 .id(user.getId())

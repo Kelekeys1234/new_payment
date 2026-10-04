@@ -41,9 +41,7 @@ export default function UserRegistrationPage() {
     const next: FormErrors = {};
     if (!createdBy.trim()) next.createdBy = "Created by is required.";
     if (!fullName.trim()) next.fullName = "Full name is required.";
-    if (!email.trim()) {
-      next.email = "Email is required.";
-    } else if (!EMAIL_PATTERN.test(email.trim())) {
+    if (email.trim() && !EMAIL_PATTERN.test(email.trim())) {
       next.email = "Enter a valid email address.";
     }
     if (!phoneNumber.trim()) {
@@ -68,7 +66,7 @@ export default function UserRegistrationPage() {
       const user = await userService.create({
         createdBy: createdBy.trim(),
         fullName: fullName.trim(),
-        email: email.trim(),
+        email: email.trim() || undefined,
         phoneNumber: phoneNumber.trim(),
         address: address.trim(),
         memberType: memberType as MemberType,
@@ -165,7 +163,7 @@ export default function UserRegistrationPage() {
 
         <div className="field">
           <label className="field-label" htmlFor="email">
-            Email<span className="field-required">*</span>
+            Email <span className="field-hint">(optional)</span>
           </label>
           <input
             id="email"

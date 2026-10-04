@@ -60,8 +60,7 @@ public class UserService {
     }
 
     /**
-     * Full registration flow: full name, email, phone number, address, and member/worker type
-     * are all required. Rejects duplicate phone numbers and duplicate emails.
+     * Full registration flow. Email is optional; when provided, it must be unique.
      */
     public UserResponse createUser(CreateUserRequest request) {
         String normalizedPhone = normalizePhone(request.getPhoneNumber());
@@ -70,15 +69,18 @@ public class UserService {
             throw new DuplicateUserException(
                     "User with phone number " + request.getPhoneNumber() + " already exists");
         });
-        userRepository.findByEmailIgnoreCase(request.getEmail()).ifPresent(existing -> {
-            throw new DuplicateUserException(
-                    "User with email " + request.getEmail() + " already exists");
-        });
+        String email = request.getEmail() == null || request.getEmail().isBlank()
+                ? null : request.getEmail().trim();
+        if (email != null) {
+            userRepository.findByEmailIgnoreCase(email).ifPresent(existing -> {
+                throw new DuplicateUserException("User with email " + email + " already exists");
+            });
+        }
 
         User user = User.builder()
                 .id(sequenceGeneratorService.nextValue(USER_SEQUENCE))
                 .fullName(request.getFullName())
-                .email(request.getEmail())
+                .email(email)
                 .phoneNumber(normalizedPhone)
                 .address(request.getAddress())
                 .memberType(request.getMemberType())
