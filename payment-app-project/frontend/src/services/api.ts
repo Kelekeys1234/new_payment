@@ -1,7 +1,7 @@
 import axios from "axios";
 import { clearStoredAuth, getToken } from "./authStorage";
 
-const baseURL = import.meta.env.VITE_API_BASE_URL || "http://localhost:8080/api";
+const baseURL = import.meta.env.VITE_API_BASE_URL || "https://new-payment-2.onrender.com/api";
 
 export const api = axios.create({
   baseURL,

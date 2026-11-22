@@ -55,8 +55,9 @@ npm install
 npm run dev
 ```
 
-The app opens on **http://localhost:5173** and talks to the backend at
-`http://localhost:8080/api` (configurable in `frontend/.env`).
+The app opens on **http://localhost:5173**. The frontend API base URL is configurable with
+`VITE_API_BASE_URL`; it defaults to the deployed backend at
+`https://new-payment-2.onrender.com/api`.
 
 ---
 
@@ -68,4 +69,4 @@ The app opens on **http://localhost:5173** and talks to the backend at
   environment variable there.
 - **Frontend**: `npm run build` produces a static `dist/` folder you can deploy to any static
   host (Vercel, Netlify, S3+CloudFront, etc.). Set `VITE_API_BASE_URL` to your deployed
-  backend's `/api` URL before building.
+  backend's `/api` URL before building if it differs from the default.
