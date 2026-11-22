@@ -28,8 +28,8 @@ export default function LandingPage() {
           backgroundImage: `linear-gradient(118deg, rgba(20,62,57,.88) 0%, rgba(27,90,80,.65) 55%, rgba(35,113,102,.45) 100%), url(${partnersImage})`,
         }}
       >
-        <div className="landing-orb landing-orb-one" />
-        <div className="landing-orb landing-orb-two" />
+        <div className="landing-orb landing-orb-one" aria-hidden="true" />
+        <div className="landing-orb landing-orb-two" aria-hidden="true" />
         <div className="landing-hero-content">
           <p className="landing-kicker"><span /> Calvararian</p>
           <h1>We build<br /><em>for His glory.</em></h1>
@@ -37,19 +37,19 @@ export default function LandingPage() {
             You are warmly welcomed to become a Nehemiah Builder. Together, we build a home for the vision God has given us.
           </p>
           <div className="landing-actions">
-            <Link to="/give" className="landing-button landing-button-primary">Become a Builder <span>→</span></Link>
-            <a href="#vision" className="landing-button landing-button-quiet">Our vision <span>↓</span></a>
+            <Link to="/give" className="landing-button landing-button-primary">Become a Builder <span aria-hidden="true">&rarr;</span></Link>
+            <a href="#vision" className="landing-button landing-button-quiet">Our vision <span aria-hidden="true">&darr;</span></a>
           </div>
         </div>
         <div className="hero-scripture">
-          <span className="scripture-mark">“</span>
+          <span className="scripture-mark" aria-hidden="true">&ldquo;</span>
           <p>Freely ye have received, freely give.</p>
           <small>Matthew 10:8</small>
         </div>
       </section>
 
       <section className="landing-banner" aria-label="Our shared mission">
-        <span>One Vision</span><i /> <span>One Kingdom</span><i /> <span>One Assignment</span>
+        <span>One Vision</span><i aria-hidden="true" /> <span>One Kingdom</span><i aria-hidden="true" /> <span>One Assignment</span>
       </section>
 
       <section className="landing-purpose" id="vision">
@@ -62,7 +62,7 @@ export default function LandingPage() {
         </p>
       </section>
 
-      <section className="landing-pillars">
+      <section className="landing-pillars" aria-label="Ways to take part">
         {pillars.map((pillar) => (
           <article className="landing-pillar" key={pillar.number}>
             <span className="pillar-number">{pillar.number}</span>
@@ -77,7 +77,7 @@ export default function LandingPage() {
           <p className="landing-kicker"><span /> Your part matters</p>
           <h2>Let us build<br /><em>together.</em></h2>
         </div>
-        <Link to="/give" className="landing-button landing-button-light">Give toward the vision <span>→</span></Link>
+        <Link to="/give" className="landing-button landing-button-light">Give toward the vision <span aria-hidden="true">&rarr;</span></Link>
       </section>
 
       <footer className="landing-footer">
@@ -86,7 +86,7 @@ export default function LandingPage() {
           <a href="https://www.calvararian.org" target="_blank" rel="noreferrer">www.calvararian.org</a>
           <a href="tel:09090006142">09090006142</a>
         </div>
-        <p>ONE VISION · ONE KINGDOM · ONE ASSIGNMENT</p>
+        <p>ONE VISION &middot; ONE KINGDOM &middot; ONE ASSIGNMENT</p>
       </footer>
     </div>
   );
