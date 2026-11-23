@@ -40,6 +40,11 @@ export default function LandingPage() {
             <Link to="/give" className="landing-button landing-button-primary">Become a Builder <span aria-hidden="true">&rarr;</span></Link>
             <a href="#vision" className="landing-button landing-button-quiet">Our vision <span aria-hidden="true">&darr;</span></a>
           </div>
+          <div className="landing-hero-values" aria-label="Our shared values">
+            <span>Faith-led giving</span><i aria-hidden="true" />
+            <span>Shared purpose</span><i aria-hidden="true" />
+            <span>Lasting impact</span>
+          </div>
         </div>
         <div className="hero-scripture">
           <span className="scripture-mark" aria-hidden="true">&ldquo;</span>
@@ -57,9 +62,13 @@ export default function LandingPage() {
           <p className="landing-kicker"><span /> The Nehemiah call</p>
           <h2>Called to build<br />something that lasts.</h2>
         </div>
-        <p className="purpose-copy">
-          Nehemiah Builders Partners is a shared act of faith. There is a place for every willing heart, every prayer, and every gift.
-        </p>
+        <div className="purpose-message">
+          <span className="purpose-message-mark" aria-hidden="true">✳</span>
+          <p className="purpose-copy">
+            Nehemiah Builders Partners is a shared act of faith. There is a place for every willing heart, every prayer, and every gift.
+          </p>
+          <span className="purpose-signature">A place for every willing heart</span>
+        </div>
       </section>
 
       <section className="landing-pillars" aria-label="Ways to take part">
