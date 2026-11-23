@@ -1619,6 +1619,34 @@ body:has(.home-refresh) .navbar-link.active {
   .home-footer-contact { flex-direction: column; gap: 8px; }
 }
 
+/* Force the header and hero to the viewport edges on every screen width. */
+.app-shell:has(.home-refresh) { width: 100%; max-width: 100%; }
+.app-shell:has(.home-refresh) > .navbar-home {
+  width: 100vw;
+  left: 50%;
+  right: auto;
+  transform: translateX(-50%);
+}
+.app-shell:has(.home-refresh) > .app-main {
+  width: 100vw;
+  max-width: none;
+  margin-left: calc(50% - 50vw);
+  padding: 0;
+}
+.home-refresh {
+  position: relative;
+  left: 50%;
+  width: 100vw;
+  max-width: none;
+  margin: 0;
+  transform: translateX(-50%);
+}
+.home-refresh .home-hero,
+.home-refresh .home-quote-banner {
+  width: 100%;
+  max-width: none;
+}
+
 @media (max-width: 420px) {
   body:has(.home-refresh) .navbar-inner { padding-inline: 13px; }
   body:has(.home-refresh) .navbar-link { padding: 8px 10px; font-size: 11px; }
