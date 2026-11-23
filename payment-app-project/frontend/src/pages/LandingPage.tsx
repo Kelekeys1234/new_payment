@@ -22,7 +22,12 @@ const pillars = [
 export default function LandingPage() {
   return (
     <div className="landing-page home-refresh">
-      <section className="home-hero">
+      <section
+        className="home-hero"
+        style={{
+          backgroundImage: `linear-gradient(100deg, rgba(15, 45, 39, .86) 0%, rgba(18, 53, 46, .67) 48%, rgba(18, 53, 46, .24) 100%), url(${partnersImage})`,
+        }}
+      >
         <div className="home-hero-copy">
           <p className="home-eyebrow"><span /> Calvary Point Assembly International</p>
           <h1>We build<br />for <em>His glory.</em></h1>
@@ -36,15 +41,6 @@ export default function LandingPage() {
           <div className="home-motto"><span /> One vision <i /> One kingdom <i /> One assignment</div>
         </div>
 
-        <figure className="home-photo">
-          <img src={partnersImage} alt="Calvary Point Assembly International building" />
-          <figcaption>
-            <span className="home-photo-mark" aria-hidden="true">N</span>
-            <span><small>Nehemiah Builders Partners</small><strong>A vision we build together</strong></span>
-            <span className="home-photo-arrow" aria-hidden="true">↗</span>
-          </figcaption>
-        </figure>
-        <span className="home-hero-index" aria-hidden="true">01 — 03</span>
       </section>
 
       <section className="home-vision" id="home-vision">

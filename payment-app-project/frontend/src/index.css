@@ -1662,6 +1662,42 @@ body:has(.home-refresh) .navbar-link.active {
   .home-photo figcaption { max-width: calc(100% - 14px); margin: 12px 0 0 14px; }
 }
 
+/* Use the supplied photo as a full-width cover banner behind the hero copy. */
+.home-hero {
+  display: flex;
+  min-height: min(760px, calc(100vh - 82px));
+  align-items: center;
+  padding: clamp(72px, 10vw, 128px) max(8vw, 34px);
+  background-color: #173f37;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.home-hero-copy { max-width: 720px; color: #fffdf7; }
+.home-hero .home-eyebrow { color: #f0d38f; }
+.home-hero h1 { color: #fffdf7; }
+.home-hero h1 em { color: #f0d38f; }
+.home-hero .home-lede { color: rgba(255, 253, 247, .84); }
+.home-hero .home-text-link { color: #fffdf7; }
+.home-hero .home-motto { color: rgba(255, 253, 247, .75); }
+
+@media (max-width: 900px) {
+  .home-hero { padding-inline: 28px; }
+}
+
+@media (max-width: 700px) {
+  .home-hero {
+    min-height: 650px;
+    padding: 70px 24px;
+    background-position: 63% center;
+  }
+}
+
+@media (max-width: 420px) {
+  .home-hero { min-height: 620px; padding-inline: 20px; }
+}
+
 /* A more distinctive, welcoming public home */
 body:has(.landing-page) .navbar {
   background: rgba(252, 250, 244, .92);
