@@ -1,11 +1,10 @@
-import { NavLink, useNavigate } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-
-import logoUrl from "../assets/calvary-point-assembly.jpg";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
 
   const links = [
     { to: "/", label: "Home", end: true },
@@ -22,11 +21,14 @@ export default function Navbar() {
   }
 
   return (
-    <header className="navbar">
+    <header className={"navbar" + (location.pathname === "/" ? " navbar-home" : "")}>
       <div className="navbar-inner">
         <NavLink to="/" className="navbar-brand">
-          <img src={logoUrl} alt="Calvary Point Assembly International" className="navbar-logo" />
-          NEHEMIAH BUILDERS PARTNERS INTERNATIONAL
+          <span className="navbar-monogram" aria-hidden="true">N</span>
+          <span className="navbar-brand-copy">
+            <strong>NEHEMIAH BUILDERS</strong>
+            <small>PARTNERS INTERNATIONAL</small>
+          </span>
         </NavLink>
         <nav className="navbar-links">
           {links.map((link) => (

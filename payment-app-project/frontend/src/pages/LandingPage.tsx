@@ -25,22 +25,31 @@ export default function LandingPage() {
       <section
         className="home-hero"
         style={{
-          backgroundImage: `linear-gradient(100deg, rgba(15, 45, 39, .86) 0%, rgba(18, 53, 46, .67) 48%, rgba(18, 53, 46, .24) 100%), url(${partnersImage})`,
+          backgroundImage: `linear-gradient(100deg, rgba(8, 27, 72, .91) 0%, rgba(11, 36, 91, .73) 48%, rgba(12, 47, 99, .28) 100%), url(${partnersImage})`,
         }}
       >
         <div className="home-hero-copy">
-          <p className="home-eyebrow"><span /> Calvary Point Assembly International</p>
-          <h1>We build<br />for <em>His glory.</em></h1>
+          <p className="home-eyebrow"><span /> Fig. 01 — Calvary Point Assembly International</p>
+          <h1>We build<br />for His<br /><em>glory.</em></h1>
           <p className="home-lede">
             Be part of the Nehemiah Builders vision. Together, we are building a home for worship, service, and ministry.
           </p>
           <div className="home-actions">
-            <Link to="/give" className="home-button home-button-primary">Become a Builder <span aria-hidden="true">&rarr;</span></Link>
-            <a className="home-text-link" href="#home-vision">Explore the vision <span aria-hidden="true">&darr;</span></a>
+            <Link to="/give" className="home-button home-button-primary">Give toward the vision <span aria-hidden="true">&rarr;</span></Link>
+            <Link to="/register" className="home-button home-button-outline">Join Us</Link>
           </div>
           <div className="home-motto"><span /> One vision <i /> One kingdom <i /> One assignment</div>
         </div>
+        <div className="home-hero-callout">
+          <span className="home-callout-mark" aria-hidden="true">N</span>
+          <span><small>Nehemiah Builders Partners</small><strong>A vision we build together</strong></span>
+          <span className="home-callout-arrow" aria-hidden="true">↗</span>
+        </div>
+      </section>
 
+      <section className="home-quote-banner">
+        <p>“Freely ye have received, freely give.”</p>
+        <span>Matthew 10:8</span>
       </section>
 
       <section className="home-vision" id="home-vision">
