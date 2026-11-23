@@ -1639,6 +1639,29 @@ body:has(.home-refresh) .navbar-link.active {
   .home-button, .home-pillar { transition: none; }
 }
 
+/* Keep the supplied photo uncropped and at its original aspect ratio. */
+.home-photo { padding: 0 0 18px; }
+.home-photo::before { top: 18px; left: 22px; }
+.home-photo img {
+  height: auto;
+  aspect-ratio: auto;
+  object-fit: contain;
+}
+.home-photo figcaption {
+  position: relative;
+  inset: auto;
+  width: fit-content;
+  max-width: calc(100% - 22px);
+  margin: 14px 0 0 22px;
+}
+
+@media (max-width: 700px) {
+  .home-photo { padding: 0 0 15px; }
+  .home-photo::before { top: 14px; left: 14px; }
+  .home-photo img { aspect-ratio: auto; }
+  .home-photo figcaption { max-width: calc(100% - 14px); margin: 12px 0 0 14px; }
+}
+
 /* A more distinctive, welcoming public home */
 body:has(.landing-page) .navbar {
   background: rgba(252, 250, 244, .92);
