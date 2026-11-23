@@ -1647,6 +1647,19 @@ body:has(.home-refresh) .navbar-link.active {
   max-width: none;
 }
 
+@media (min-width: 801px) {
+  .navbar-home .navbar-inner {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    justify-content: space-between;
+    padding-inline: 4vw;
+  }
+
+  .navbar-home .navbar-brand { margin-right: auto; }
+  .navbar-home .navbar-links { margin-left: auto; justify-content: flex-end; }
+}
+
 @media (max-width: 420px) {
   body:has(.home-refresh) .navbar-inner { padding-inline: 13px; }
   body:has(.home-refresh) .navbar-link { padding: 8px 10px; font-size: 11px; }
