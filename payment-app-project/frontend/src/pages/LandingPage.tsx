@@ -5,97 +5,90 @@ const pillars = [
   {
     number: "01",
     title: "Give freely",
-    text: "Every gift is offered willingly, as each person is led by God and according to their ability.",
+    text: "Offer a gift willingly, as you are led and according to your ability.",
   },
   {
     number: "02",
     title: "Build together",
-    text: "Join a family of believers committed to strengthening the work set before us.",
+    text: "Join a family of believers strengthening the work set before us.",
   },
   {
     number: "03",
     title: "Leave a legacy",
-    text: "Your faithful support helps create a lasting place for worship, service, and ministry.",
+    text: "Help create a lasting place for worship, service, and ministry.",
   },
 ];
 
 export default function LandingPage() {
   return (
-    <div className="landing-page">
-      <section
-        className="landing-hero"
-        style={{
-          backgroundImage: `linear-gradient(118deg, rgba(20,62,57,.88) 0%, rgba(27,90,80,.65) 55%, rgba(35,113,102,.45) 100%), url(${partnersImage})`,
-        }}
-      >
-        <div className="landing-orb landing-orb-one" aria-hidden="true" />
-        <div className="landing-orb landing-orb-two" aria-hidden="true" />
-        <div className="landing-hero-content">
-          <p className="landing-kicker"><span /> Calvararian</p>
-          <h1>We build<br /><em>for His glory.</em></h1>
-          <p className="landing-intro">
-            You are warmly welcomed to become a Nehemiah Builder. Together, we build a home for the vision God has given us.
+    <div className="landing-page home-refresh">
+      <section className="home-hero">
+        <div className="home-hero-copy">
+          <p className="home-eyebrow"><span /> Calvary Point Assembly International</p>
+          <h1>We build<br />for <em>His glory.</em></h1>
+          <p className="home-lede">
+            Be part of the Nehemiah Builders vision. Together, we are building a home for worship, service, and ministry.
           </p>
-          <div className="landing-actions">
-            <Link to="/give" className="landing-button landing-button-primary">Become a Builder <span aria-hidden="true">&rarr;</span></Link>
-            <a href="#vision" className="landing-button landing-button-quiet">Our vision <span aria-hidden="true">&darr;</span></a>
+          <div className="home-actions">
+            <Link to="/give" className="home-button home-button-primary">Become a Builder <span aria-hidden="true">&rarr;</span></Link>
+            <a className="home-text-link" href="#home-vision">Explore the vision <span aria-hidden="true">&darr;</span></a>
           </div>
-          <div className="landing-hero-values" aria-label="Our shared values">
-            <span>Faith-led giving</span><i aria-hidden="true" />
-            <span>Shared purpose</span><i aria-hidden="true" />
-            <span>Lasting impact</span>
-          </div>
+          <div className="home-motto"><span /> One vision <i /> One kingdom <i /> One assignment</div>
         </div>
-        <div className="hero-scripture">
-          <span className="scripture-mark" aria-hidden="true">&ldquo;</span>
-          <p>Freely ye have received, freely give.</p>
-          <small>Matthew 10:8</small>
+
+        <figure className="home-photo">
+          <img src={partnersImage} alt="Calvary Point Assembly International building" />
+          <figcaption>
+            <span className="home-photo-mark" aria-hidden="true">N</span>
+            <span><small>Nehemiah Builders Partners</small><strong>A vision we build together</strong></span>
+            <span className="home-photo-arrow" aria-hidden="true">↗</span>
+          </figcaption>
+        </figure>
+        <span className="home-hero-index" aria-hidden="true">01 — 03</span>
+      </section>
+
+      <section className="home-vision" id="home-vision">
+        <div className="home-vision-heading">
+          <p className="home-eyebrow"><span /> The Nehemiah call</p>
+          <h2>A shared act<br />of <em>faith.</em></h2>
+        </div>
+        <div className="home-vision-copy">
+          <span className="home-vision-symbol" aria-hidden="true">✳</span>
+          <p>There is a place for every willing heart, every prayer, and every gift. Your part helps bring the vision God has given us to life.</p>
+          <span className="home-verse">“Freely ye have received, freely give.” <b>Matthew 10:8</b></span>
         </div>
       </section>
 
-      <section className="landing-banner" aria-label="Our shared mission">
-        <span>One Vision</span><i aria-hidden="true" /> <span>One Kingdom</span><i aria-hidden="true" /> <span>One Assignment</span>
-      </section>
-
-      <section className="landing-purpose" id="vision">
-        <div className="purpose-heading">
-          <p className="landing-kicker"><span /> The Nehemiah call</p>
-          <h2>Called to build<br />something that lasts.</h2>
-        </div>
-        <div className="purpose-message">
-          <span className="purpose-message-mark" aria-hidden="true">✳</span>
-          <p className="purpose-copy">
-            Nehemiah Builders Partners is a shared act of faith. There is a place for every willing heart, every prayer, and every gift.
-          </p>
-          <span className="purpose-signature">A place for every willing heart</span>
-        </div>
-      </section>
-
-      <section className="landing-pillars" aria-label="Ways to take part">
+      <section className="home-pillars" aria-label="Ways to take part">
         {pillars.map((pillar) => (
-          <article className="landing-pillar" key={pillar.number}>
-            <span className="pillar-number">{pillar.number}</span>
+          <article className="home-pillar" key={pillar.number}>
+            <span className="home-pillar-number">{pillar.number}</span>
+            <span className="home-pillar-rule" aria-hidden="true" />
             <h3>{pillar.title}</h3>
             <p>{pillar.text}</p>
           </article>
         ))}
       </section>
 
-      <section className="landing-cta">
-        <div>
-          <p className="landing-kicker"><span /> Your part matters</p>
+      <section className="home-invitation">
+        <div className="home-invitation-label"><span /> Your part matters</div>
+        <div className="home-invitation-main">
           <h2>Let us build<br /><em>together.</em></h2>
+          <div className="home-invitation-action">
+            <p>Join the vision with a gift, a prayer, and a willing heart.</p>
+            <Link to="/give" className="home-button home-button-light">Give toward the vision <span aria-hidden="true">&rarr;</span></Link>
+          </div>
         </div>
-        <Link to="/give" className="landing-button landing-button-light">Give toward the vision <span aria-hidden="true">&rarr;</span></Link>
+        <span className="home-invitation-decoration" aria-hidden="true">N</span>
       </section>
 
-      <footer className="landing-footer">
-        <div className="footer-brand">NEHEMIAH BUILDERS <span>PARTNERS INTERNATIONAL</span></div>
-        <div className="footer-contact">
+      <footer className="home-footer">
+        <div className="home-footer-brand">NEHEMIAH BUILDERS <span>PARTNERS INTERNATIONAL</span></div>
+        <div className="home-footer-contact">
           <a href="https://www.calvararian.org" target="_blank" rel="noreferrer">www.calvararian.org</a>
           <a href="tel:09090006142">09090006142</a>
         </div>
-        <p>ONE VISION &middot; ONE KINGDOM &middot; ONE ASSIGNMENT</p>
+        <p>CALVARY POINT ASSEMBLY INTERNATIONAL</p>
       </footer>
     </div>
   );
